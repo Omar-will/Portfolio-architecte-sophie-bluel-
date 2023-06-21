@@ -180,10 +180,10 @@ divItems.addEventListener("click", function (event) {
 });
 
 // Fonction de filtrage des images
+
 function filterImages(category) {
   const figures = divGallery.querySelectorAll("figure");
 
-  // Parcours de toutes les figures pour afficher ou masquer les images
   figures.forEach(function (figure) {
     const img = figure.querySelector("img");
     const alt = img.alt.toLowerCase();
@@ -210,81 +210,57 @@ function filterImages(category) {
   });
 }
 
-const projects = [
-  {
-    src: "assets/images/abajour-tahina.png",
-    alt: "Abajour Tahina",
-    figcaption: "Abajour Tahina",
-  },
-  {
-    src: "assets/images/appartement-paris-v.png",
-    alt: "Appartement Paris V",
-    figcaption: "Appartement Paris V",
-  },
-  {
-    src: "assets/images/restaurant-sushisen-londres.png",
-    alt: "Restaurant Sushisen - Londres",
-    figcaption: "Restaurant Sushisen - Londres",
-  },
-  {
-    src: "assets/images/la-balisiere.png",
-    alt: "Villa “La Balisiere” - Port Louis",
-    figcaption: "Villa “La Balisiere” - Port Louis",
-  },
-  {
-    src: "assets/images/structures-thermopolis.png",
-    alt: "Structures Thermopolis",
-    figcaption: "Structures Thermopolis",
-  },
-  {
-    src: "assets/images/appartement-paris-x.png",
-    alt: "Appartement Paris X",
-    figcaption: "Appartement Paris X",
-  },
-  {
-    src: "assets/images/le-coteau-cassis.png",
-    alt: "Pavillon “Le coteau” - Cassis",
-    figcaption: "Pavillon “Le coteau” - Cassis",
-  },
-  {
-    src: "assets/images/villa-ferneze.png",
-    alt: "Villa Ferneze - Isola d’Elba",
-    figcaption: "Villa Ferneze - Isola d’Elba",
-  },
-  {
-    src: "assets/images/appartement-paris-xviii.png",
-    alt: "Appartement Paris XVIII",
-    figcaption: "Appartement Paris XVIII",
-  },
-  {
-    src: "assets/images/bar-lullaby-paris.png",
-    alt: "Bar “Lullaby” - Paris",
-    figcaption: "Bar “Lullaby” - Paris",
-  },
-  {
-    src: "assets/images/hotel-first-arte-new-delhi.png",
-    alt: "Hotel First Arte - New Delhi",
-    figcaption: "Hotel First Arte - New Delhi",
-  },
-];
+// Récupére les images depuis l'API
+fetch('http://localhost:5678/api/works')
+  .then(response => response.json())
+  .then(data => {
+    const projects = data;
 
-projects.forEach((project) => {
-  const figureProject = document.createElement("figure");
-  const imgProject = document.createElement("img");
-  imgProject.src = project.src;
-  imgProject.alt = project.alt;
-  const figcaptionProject = document.createElement("figcaption");
-  figcaptionProject.innerText = project.figcaption;
+    // Utilise les données récupérées pour afficher les images sur votre site
+    const gallery = document.querySelector('.gallery');
+    gallery.innerHTML = '';
 
-  figureProject.appendChild(imgProject);
-  figureProject.appendChild(figcaptionProject);
-  divGallery.appendChild(figureProject);
+    projects.forEach(project => {
+      const figure = document.createElement("figure");
+      const image = document.createElement("img");
+      image.src = project.imageUrl;
+      image.alt = project.title;
+      const figcaption = document.createElement("figcaption");
+      figcaption.textContent = project.title;
+
+      figure.appendChild(image);
+      figure.appendChild(figcaption);
+      gallery.appendChild(figure);
+    });
+
+    // Une fois que les images sont chargées, appliquer le filtrage par défaut
+    filterImages("tous");
+  })
+  .catch(error => {
+    console.error('Une erreur s\'est produite lors de la récupération des données :', error);
+  });
+
+// Ajouter un gestionnaire d'événement au conteneur des spans
+divItems.addEventListener("click", function (event) {
+  if (event.target.tagName === "SPAN") {
+    const spans = divItems.querySelectorAll("span");
+    spans.forEach(function (span) {
+      span.classList.remove("active");
+    });
+
+    event.target.classList.add("active");
+
+    const category = event.target.innerText.toLowerCase();
+
+    // Appliquer le filtrage des images en fonction de la catégorie sélectionnée
+    filterImages(category);
+  }
 });
 
 sectionPortfolio.appendChild(divGallery);
 main.appendChild(sectionPortfolio);
 
-// Section contact
+// Section contact----------------------------------------------------------------------------
 const sectionContact = document.createElement("section");
 sectionContact.id = "contact";
 
