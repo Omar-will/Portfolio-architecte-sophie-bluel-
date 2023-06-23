@@ -141,6 +141,7 @@ submit.addEventListener('click', (e) => {
         });
 });
 
+
 // ------ Récupération des données --------------
 
 inputEmail.addEventListener('input', (e) => {

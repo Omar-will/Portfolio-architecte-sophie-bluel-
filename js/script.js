@@ -1,3 +1,4 @@
+// Fonction de récupération des catégories depuis l'API
 function fetchCategory() {
   return fetch("http://localhost:5678/api/categories")
     .then((response) => response.json())
@@ -6,6 +7,8 @@ function fetchCategory() {
       return categories;
     });
 }
+
+// Fonction de récupération des travaux depuis l'API
 function fetchWorks() {
   return fetch("http://localhost:5678/api/works")
     .then((response) => response.json())
@@ -15,7 +18,7 @@ function fetchWorks() {
     });
 }
 
-// --- fonction asynchrome afin d'attendre la récupération des données
+// Fonction asynchrone pour attendre la récupération des données
 async function fetchData() {
   const works = await fetchWorks();
   worksData = works;
@@ -23,14 +26,55 @@ async function fetchData() {
   displayProjectAndCategories(categories, works);
 }
 
+// Création de la barre noire
+const blackBar = document.createElement("div");
+blackBar.style.backgroundColor = "black";
+blackBar.style.height = "60px";
+blackBar.style.width = "100%";
+blackBar.style.position = "fixed";
+blackBar.style.display = "flex";
+blackBar.style.justifyContent = "center";
+blackBar.style.alignItems = "center";
+
+// Création de l'icône
+const icon = document.createElement("i");
+icon.className = "far fa-pen-to-square transparent-bg";
+icon.style.color = "#ffffff"; 
+icon.style.marginRight = "15px";
+const text1 = document.createElement("span");
+text1.innerText = "Mode édition";
+text1.className = "transparent-bg";
+text1.style.color = "#ffffff";
+text1.style.marginRight = "15px";
+const text2 = document.createElement("span");
+text2.innerText = "Publier les changements";
+text2.className = "transparent-bg";
+text2.style.color = "#ffffff"; // Couleur du texte (blanc)
+
+// Ajout des éléments à la barre noire
+blackBar.appendChild(icon);
+blackBar.appendChild(text1);
+blackBar.appendChild(text2);
+
+
 // Création de l'en-tête
 const header = document.createElement("header");
 const h1 = document.createElement("h1");
+header.style.marginTop = "-100px";
 h1.innerText = "Sophie Bluel";
 const span = document.createElement("span");
 span.innerText = "Architecte d'intérieur";
 h1.appendChild(span);
 header.appendChild(h1);
+
+// Récupération de l'élément parent de l'en-tête
+const parentElement = document.body; // Vous pouvez ajuster cet élément selon votre structure HTML
+
+// Insérer la barre noire avant l'en-tête
+parentElement.insertAdjacentElement("beforebegin", blackBar);
+
+// Insérer l'en-tête après la barre noire
+blackBar.insertAdjacentElement("afterend", header);
 
 const nav = document.createElement("nav");
 const ul = document.createElement("ul");
@@ -39,11 +83,7 @@ liProjets.innerText = "projets";
 const liContact = document.createElement("li");
 liContact.innerText = "contact";
 const liLogin = document.createElement("li");
-const link = document.createElement("a");
-link.innerText = "login";
-link.href = "./login.html";
-link.style.textDecoration = "none"; 
-link.style.color = "inherit";
+liLogin.id = "login";
 const liInstagram = document.createElement("li");
 const imgInstagram = document.createElement("img");
 imgInstagram.src = "./assets/icons/instagram.png";
@@ -52,13 +92,51 @@ imgInstagram.style.width = '20px';
 imgInstagram.style.height = 'auto'
 liInstagram.appendChild(imgInstagram);
 
-liLogin.appendChild(link);
 ul.appendChild(liProjets);
 ul.appendChild(liContact);
 ul.appendChild(liLogin);
 ul.appendChild(liInstagram);
 nav.appendChild(ul);
 header.appendChild(nav);
+
+document.addEventListener("DOMContentLoaded", () => {
+  const liLogin = document.getElementById("login");
+  const spansToHide = document.querySelectorAll(".hide-span");
+  // Vérifie si l'utilisateur est connecté en vérifiant la présence du token dans le stockage local
+  if (localStorage.getItem('token')) {
+    // Remplace le lien "login" par un bouton "logout"
+    liLogin.innerHTML = '';
+    const linkLogout = document.createElement("a");
+    linkLogout.innerText = "Logout";
+    linkLogout.href = "#";
+    linkLogout.style.textDecoration = "none";
+    linkLogout.style.color = "inherit";
+    linkLogout.addEventListener("click", () => {
+      localStorage.removeItem('token');
+      window.location.href = "./index.html";
+    });
+
+    liLogin.appendChild(linkLogout);
+    // Masquer les <span>
+    spansToHide.forEach((span) => {
+      span.style.display = "none";
+    });
+  } else {
+    // L'utilisateur n'est pas connecté, affiche le lien "login"
+    const loginLink = document.createElement("a");
+    loginLink.innerText = "Login";
+    loginLink.href = "./login.html";
+    loginLink.style.textDecoration = "none";
+    loginLink.style.color = "inherit";
+    loginLink.classList.add("link-style"); 
+    liLogin.appendChild(loginLink);
+    // Afficher les <span>
+    spansToHide.forEach((span) => {
+      span.style.display = "inline"; // Ou "block" selon le style souhaité
+    });
+  }
+});
+
 
 // Création du contenu principal
 const main = document.createElement("main");
@@ -111,15 +189,19 @@ divItems.className = "items";
 
 const span1 = document.createElement("span");
 span1.innerText = "Tous";
+span1.classList.add("hide-span");
 
 const span2 = document.createElement("span");
 span2.innerText = "Objets";
+span2.classList.add("hide-span");
 
 const span3 = document.createElement("span");
 span3.innerText = "Appartements";
+span3.classList.add("hide-span");
 
 const span4 = document.createElement("span");
 span4.innerText = "Hôtels & restaurants";
+span4.classList.add("hide-span");
 
 divItems.appendChild(span1);
 divItems.appendChild(span2);
@@ -141,26 +223,6 @@ divItems.addEventListener("click", function (event) {
   }
 });
 
-// ...
-
-// Fonction de filtrage des images
-function filterImages(category) {
-  const figures = divGallery.querySelectorAll("figure");
-
-  // Parcours de toutes les figures pour afficher ou masquer les images
-  figures.forEach(function (figure) {
-    const img = figure.querySelector("img");
-    const alt = img.alt.toLowerCase();
-
-    // Affiche les images correspondant à la catégorie sélectionnée
-    if (category === "tous" || alt.includes(category)) {
-      figure.style.display = "block";
-    } else {
-      figure.style.display = "none";
-    }
-  });
-}
-
 // Ajoutez un gestionnaire d'événement au conteneur des spans
 divItems.addEventListener("click", function (event) {
   if (event.target.tagName === "SPAN") {
@@ -180,7 +242,6 @@ divItems.addEventListener("click", function (event) {
 });
 
 // Fonction de filtrage des images
-
 function filterImages(category) {
   const figures = divGallery.querySelectorAll("figure");
 
@@ -260,6 +321,7 @@ divItems.addEventListener("click", function (event) {
 sectionPortfolio.appendChild(divGallery);
 main.appendChild(sectionPortfolio);
 
+
 // Section contact----------------------------------------------------------------------------
 const sectionContact = document.createElement("section");
 sectionContact.id = "contact";
@@ -328,3 +390,6 @@ footer.appendChild(navFooter);
 document.body.appendChild(header);
 document.body.appendChild(main);
 document.body.appendChild(footer);
+
+
+
