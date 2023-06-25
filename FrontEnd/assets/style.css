@@ -142,10 +142,20 @@ li:hover {
 	margin-top: 8rem;
 }
 
-#portfolio h2  {
-	text-align: center;
-	margin-bottom: 4rem;
+#portfolio h2   {
+	margin-bottom: 6rem;
 }
+
+#portfolio i   {
+	color: #1D6154;
+	margin-bottom: 6rem;
+}
+
+#portfolio span   {
+	
+	margin-bottom: 6rem;
+}
+
 
 .items {
 
@@ -236,7 +246,12 @@ input[type="submit"]{
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
-	margin: 2em
+	margin-left: -12rem;
+	margin-right: -11.8rem;
+	margin-top: 7rem;
+    background-color: white;
+    padding: 25px;
+
 }
 
 /* LOGIN */
@@ -255,15 +270,12 @@ footer nav ul {
 	color: #B1663C;
 }
 
-#loginpage footer {
-	margin-top: 7rem;
-	margin-left: -11.5rem;
-	margin-right: -11.5rem;
-
-}
 
 .transparent-bg {
 	background-color: transparent;
   }
 
-
+/* *{
+	 box-shadow: 0 0 0 3px red 
+	 inset;
+ }    */

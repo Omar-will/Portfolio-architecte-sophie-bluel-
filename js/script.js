@@ -29,32 +29,42 @@ async function fetchData() {
 // Création de la barre noire
 const blackBar = document.createElement("div");
 blackBar.style.backgroundColor = "black";
-blackBar.style.height = "60px";
+blackBar.style.height = "70px";
 blackBar.style.width = "100%";
 blackBar.style.position = "fixed";
 blackBar.style.display = "flex";
 blackBar.style.justifyContent = "center";
 blackBar.style.alignItems = "center";
+blackBar.style.fontFamily = "'Work Sans'";
+
 
 // Création de l'icône
 const icon = document.createElement("i");
 icon.className = "far fa-pen-to-square transparent-bg";
 icon.style.color = "#ffffff"; 
 icon.style.marginRight = "15px";
+icon.style.fontSize = "22px";
 const text1 = document.createElement("span");
 text1.innerText = "Mode édition";
 text1.className = "transparent-bg";
 text1.style.color = "#ffffff";
-text1.style.marginRight = "15px";
-const text2 = document.createElement("span");
-text2.innerText = "Publier les changements";
-text2.className = "transparent-bg";
-text2.style.color = "#ffffff"; // Couleur du texte (blanc)
+text1.style.marginRight = "25px";
+const bubble = document.createElement("span");
+bubble.innerText = "publier les changements";
+bubble.style.borderRadius = "50px";
+bubble.style.backgroundColor = "white";
+bubble.style.padding = "12px";
+bubble.style.width = "220px";
+bubble.style.display = "inline-block";
+bubble.style.textAlign = "center";
+bubble.style.fontWeight = "600";
+
 
 // Ajout des éléments à la barre noire
 blackBar.appendChild(icon);
 blackBar.appendChild(text1);
-blackBar.appendChild(text2);
+blackBar.appendChild(bubble);
+document.body.appendChild(blackBar);
 
 
 // Création de l'en-tête
@@ -68,7 +78,7 @@ h1.appendChild(span);
 header.appendChild(h1);
 
 // Récupération de l'élément parent de l'en-tête
-const parentElement = document.body; // Vous pouvez ajuster cet élément selon votre structure HTML
+const parentElement = document.body; 
 
 // Insérer la barre noire avant l'en-tête
 parentElement.insertAdjacentElement("beforebegin", blackBar);
@@ -104,6 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const spansToHide = document.querySelectorAll(".hide-span");
   // Vérifie si l'utilisateur est connecté en vérifiant la présence du token dans le stockage local
   if (localStorage.getItem('token')) {
+    blackBar.style.display = "flex";
     // Remplace le lien "login" par un bouton "logout"
     liLogin.innerHTML = '';
     const linkLogout = document.createElement("a");
@@ -122,6 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
       span.style.display = "none";
     });
   } else {
+    blackBar.style.display = "none";
     // L'utilisateur n'est pas connecté, affiche le lien "login"
     const loginLink = document.createElement("a");
     loginLink.innerText = "Login";
@@ -134,9 +146,16 @@ document.addEventListener("DOMContentLoaded", () => {
     spansToHide.forEach((span) => {
       span.style.display = "inline"; // Ou "block" selon le style souhaité
     });
+    const existingFlexContainer = sectionPortfolio.querySelector("i");
+    if (existingFlexContainer) {
+      existingFlexContainer.remove();
+    }
+    const existingFlexContainer2 = sectionPortfolio.querySelector("span");
+    if (existingFlexContainer2) {
+      existingFlexContainer2.remove();
+    }
   }
 });
-
 
 // Création du contenu principal
 const main = document.createElement("main");
@@ -177,9 +196,37 @@ main.appendChild(sectionIntroduction);
 const sectionPortfolio = document.createElement("section");
 sectionPortfolio.id = "portfolio";
 
+
+const flexContainer = document.createElement("div");
+flexContainer.style.display = "flex";
+flexContainer.style.alignItems = "center";
+flexContainer.style.justifyContent = "center";
+
 const h2Portfolio = document.createElement("h2");
 h2Portfolio.innerText = "Mes Projets";
-sectionPortfolio.appendChild(h2Portfolio);
+
+
+const icon2 = document.createElement("i");
+icon2.className = "far fa-pen-to-square";
+icon2.style.color = "#00000"; 
+icon2.style.marginRight = "10px";
+icon2.style.marginLeft = "35px";
+icon2.style.fontSize = "22px";
+
+const text2 = document.createElement("span");
+text2.innerText = "Modifier";
+text2.style.color = "#000000";
+text2.style.fontSize = "14px";
+text2.style.textTransform = "lowercase";
+text2.style.cursor = "pointer";
+text2.style.color = "#1D6154";
+text2.style.fontSize = "18px";
+
+flexContainer.appendChild(h2Portfolio);
+flexContainer.appendChild(icon2);
+flexContainer.appendChild(text2);
+
+sectionPortfolio.appendChild(flexContainer);
 
 const divGallery = document.createElement("div");
 divGallery.className = "gallery";
@@ -208,6 +255,7 @@ divItems.appendChild(span2);
 divItems.appendChild(span3);
 divItems.appendChild(span4);
 sectionPortfolio.appendChild(divItems);
+sectionPortfolio.appendChild(divGallery);
 
 // Ajoute une classe active au span cliqué
 divItems.addEventListener("click", function (event) {
@@ -381,6 +429,8 @@ const navFooter = document.createElement("nav");
 const ulFooter = document.createElement("ul");
 const liMentionsLegales = document.createElement("li");
 liMentionsLegales.innerText = "Mentions Légales";
+liMentionsLegales.style.marginRight = "50px";
+
 
 ulFooter.appendChild(liMentionsLegales);
 navFooter.appendChild(ulFooter);

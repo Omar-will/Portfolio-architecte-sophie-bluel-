@@ -83,8 +83,9 @@ const footerNav = document.createElement('nav');
 const footerUl = document.createElement('ul');
 const footerLi = document.createElement('li');
 footerLi.textContent = 'Mentions Légales';
-footer.style.backgroundColor = 'white';
-footer.style.padding = '7px';
+footerLi.style.marginRight = "50px";
+
+
 footerUl.appendChild(footerLi);
 footerNav.appendChild(footerUl);
 footer.appendChild(footerNav);
@@ -133,7 +134,7 @@ submit.addEventListener('click', (e) => {
                 localStorage.setItem('token', login.token);
                 isUserLogged = true;
                 window.location.href = "./index.html";
-                console.log("Utilisateur connécté");
+                console.log("Utilisateur connecté");
             } else {
                 console.error("Le token n'a pas été trouvé");
                 errorDisplay.innerHTML = "Identifiant ou Mot de passe incorrect";
