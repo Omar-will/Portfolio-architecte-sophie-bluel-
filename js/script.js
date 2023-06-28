@@ -24,7 +24,7 @@ async function fetchData() {
   worksData = works;
   const categories = await fetchCategory();
   displayProjectAndCategories(categories, works);
-}
+};
 
 // Création de la barre noire
 const blackBar = document.createElement("div");
@@ -36,6 +36,7 @@ blackBar.style.display = "flex";
 blackBar.style.justifyContent = "center";
 blackBar.style.alignItems = "center";
 blackBar.style.fontFamily = "'Work Sans'";
+blackBar.style.zIndex = "999";
 
 
 // Création de l'icône
@@ -154,6 +155,14 @@ document.addEventListener("DOMContentLoaded", () => {
     if (existingFlexContainer2) {
       existingFlexContainer2.remove();
     }
+    const existingFlexContainer3 = sectionIntroduction.querySelector("i");
+    if (existingFlexContainer3) {
+      existingFlexContainer3.remove();
+    }
+    const existingFlexContainer4 = sectionIntroduction.querySelector("span");
+    if (existingFlexContainer4) {
+      existingFlexContainer4.remove();
+    }
   }
 });
 
@@ -170,6 +179,27 @@ img.src = "./assets/images/sophie-bluel.png";
 img.alt = "sophie-bluel";
 figure.appendChild(img);
 sectionIntroduction.appendChild(figure);
+
+
+const icon3 = document.createElement("i");
+icon3.className = "far fa-pen-to-square";
+icon3.style.color = "#1D6154";
+icon3.style.marginRight = "10px";
+icon3.style.marginLeft = "60px";
+icon3.style.marginTop = "15px";
+icon3.style.fontSize = "22px";
+
+const text3 = document.createElement("span");
+text3.innerText = "Modifier";
+text3.style.color = "#1D6154";
+text3.style.textTransform = "lowercase";
+text3.style.cursor = "pointer";
+text3.style.color = "#1D6154";
+text3.style.fontSize = "16px";
+
+img.insertAdjacentElement('afterend', icon3);
+icon3.insertAdjacentElement('afterend', text3);
+
 
 const article = document.createElement("article");
 const h2Introduction = document.createElement("h2");
@@ -206,25 +236,30 @@ const h2Portfolio = document.createElement("h2");
 h2Portfolio.innerText = "Mes Projets";
 
 
-const icon2 = document.createElement("i");
-icon2.className = "far fa-pen-to-square";
-icon2.style.color = "#00000"; 
-icon2.style.marginRight = "10px";
-icon2.style.marginLeft = "35px";
-icon2.style.fontSize = "22px";
+const button2 = document.createElement("button");
+button2.style.backgroundColor = "transparent";
+button2.style.border = "none";
+button2.style.cursor = "pointer";
+button2.style.marginRight = "10px";
+button2.style.marginLeft = "40px";
+button2.style.padding = "0";
+button2.style.fontSize = "22px";
+button2.innerHTML = '<i class="far fa-pen-to-square" style="color: #1D6154;"></i>';
 
-const text2 = document.createElement("span");
-text2.innerText = "Modifier";
-text2.style.color = "#000000";
-text2.style.fontSize = "14px";
-text2.style.textTransform = "lowercase";
-text2.style.cursor = "pointer";
-text2.style.color = "#1D6154";
-text2.style.fontSize = "18px";
+const button2Text = document.createElement("span");
+button2Text.innerText = "Modifier";
+button2Text.style.color = "#1D6154";
+button2Text.style.fontSize = "14px";
+button2Text.style.marginLeft = "10px";
+button2Text.style.textTransform = "lowercase";
+button2Text.style.cursor = "pointer";
+button2Text.style.color = "#1D6154";
+button2Text.style.fontSize = "16px";
+
+button2.appendChild(button2Text);
 
 flexContainer.appendChild(h2Portfolio);
-flexContainer.appendChild(icon2);
-flexContainer.appendChild(text2);
+flexContainer.appendChild(button2);
 
 sectionPortfolio.appendChild(flexContainer);
 
@@ -238,86 +273,91 @@ const span1 = document.createElement("span");
 span1.innerText = "Tous";
 span1.classList.add("hide-span");
 
-const span2 = document.createElement("span");
-span2.innerText = "Objets";
-span2.classList.add("hide-span");
-
-const span3 = document.createElement("span");
-span3.innerText = "Appartements";
-span3.classList.add("hide-span");
-
-const span4 = document.createElement("span");
-span4.innerText = "Hôtels & restaurants";
-span4.classList.add("hide-span");
-
 divItems.appendChild(span1);
-divItems.appendChild(span2);
-divItems.appendChild(span3);
-divItems.appendChild(span4);
+
+let categories = [];
+let works = [];
+
+// Récupération des catégories à partir de l'API
+fetch('http://localhost:5678/api/categories')
+  .then(response => response.json())
+  .then(data => {
+    categories = data;
+
+    categories.forEach(category => {
+      const span = document.createElement("span");
+      span.innerText = category.name;
+      span.classList.add("hide-span");
+      divItems.appendChild(span);
+    });
+
+    // Une fois que les catégories sont chargées, on peut charger les projets
+    loadWorks();
+  })
+  .catch(error => {
+    console.error('Erreur lors de la récupération des catégories:', error);
+  });
+
 sectionPortfolio.appendChild(divItems);
 sectionPortfolio.appendChild(divGallery);
 
-// Ajoute une classe active au span cliqué
-divItems.addEventListener("click", function (event) {
-  // Vérifie si l'élément cliqué est un span
-  if (event.target.tagName === "SPAN") {
-    // Supprime la classe active de tous les spans
-    const spans = divItems.querySelectorAll("span");
-    spans.forEach(function (span) {
-      span.classList.remove("active");
-    });
-    // Ajoute la classe active au span cliqué
-    event.target.classList.add("active");
-  }
-});
-
-// Ajoutez un gestionnaire d'événement au conteneur des spans
 divItems.addEventListener("click", function (event) {
   if (event.target.tagName === "SPAN") {
     const spans = divItems.querySelectorAll("span");
     spans.forEach(function (span) {
       span.classList.remove("active");
     });
-
     event.target.classList.add("active");
 
-    // Obtenez la catégorie du span cliqué
-    const category = event.target.innerText.toLowerCase();
+    const categoryName = event.target.innerText;
 
-    // Filtrez les images en fonction de la catégorie
-    filterImages(category);
+    // Récupérer l'identifiant de catégorie correspondant au nom de catégorie
+    const category = categories.find(category => category.name === categoryName);
+    if (category) {
+      const categoryId = category.id;
+      displayWorks(categoryId);
+    }
   }
 });
 
-// Fonction de filtrage des images
-function filterImages(category) {
+function loadWorks() {
+  // Chargement des projets à partir de l'API
+  fetch('http://localhost:5678/api/works')
+    .then(response => response.json())
+    .then(data => {
+      works = data;
+      displayWorks(0);
+    })
+    .catch(error => {
+      console.error('Erreur lors du chargement des projets:', error);
+    });
+}
+
+function displayWorks(categoryId) {
+  divGallery.innerHTML = "";
+
+  const filteredWorks = categoryId !== 0 ? works.filter((work) => work.categoryId === categoryId) : works;
+
+  filteredWorks.forEach((work) => {
+    const figure = document.createElement("figure");
+    const figcaption = document.createElement("figcaption");
+    const image = document.createElement("img");
+
+    image.src = work.imageUrl;
+    figcaption.textContent = work.title;
+    figure.appendChild(image);
+    figure.appendChild(figcaption);
+    divGallery.appendChild(figure);
+  });
+}
+function filterImages(categoryId) {
   const figures = divGallery.querySelectorAll("figure");
 
   figures.forEach(function (figure) {
-    const img = figure.querySelector("img");
-    const alt = img.alt.toLowerCase();
-
-    // Affiche les images correspondant à la catégorie sélectionnée
-    if (
-      category === "tous" ||
-      (category === "objets" &&
-        (alt === "abajour tahina" || alt === "structures thermopolis")) ||
-      (category === "appartements" &&
-        (alt === "appartement paris v" ||
-          alt === "appartement paris x" ||
-          alt === "appartement paris xviii")) ||
-      (category === "hôtels & restaurants" &&
-        (alt === "restaurant sushisen - londres" ||
-          alt === "villa “la balisiere” - port louis" ||
-          alt === "bar “lullaby” - paris" ||
-          alt === "hotel first arte - new delhi"))
-    ) {
-      figure.style.display = "block";
-    } else {
-      figure.style.display = "none";
-    }
+    figure.style.display = "block";
   });
 }
+
 
 // Récupére les images depuis l'API
 fetch('http://localhost:5678/api/works')
@@ -326,7 +366,7 @@ fetch('http://localhost:5678/api/works')
     const projects = data;
 
     // Utilise les données récupérées pour afficher les images sur votre site
-    const gallery = document.querySelector('.gallery');
+    const gallery = document.querySelector('.gallery',);
     gallery.innerHTML = '';
 
     projects.forEach(project => {
@@ -342,6 +382,77 @@ fetch('http://localhost:5678/api/works')
       gallery.appendChild(figure);
     });
 
+    // Une fois que les images sont chargées, appliquer le filtrage par défaut
+    filterImages("tous");
+  })
+  .catch(error => {
+    console.error('Une erreur s\'est produite lors de la récupération des données :', error);
+  });
+
+// Récupére les images du modal depuis l'API
+fetch('http://localhost:5678/api/works')
+  .then(response => response.json())
+  .then(data => {
+    const projects = data;
+
+  const galleryWrapper = document.querySelector('.gallery__modal');
+    galleryWrapper.innerHTML = '';
+
+    projects.forEach((project, index) => {
+      const figure = document.createElement("figure");
+      const image = document.createElement("img");
+      image.src = project.imageUrl;
+      image.alt = project.title;
+      figure.appendChild(image);
+
+      const imageContainer = document.createElement("div");
+      imageContainer.classList.add("image-container");
+      imageContainer.appendChild(image);
+
+      const deleteIcon = document.createElement("i");
+      deleteIcon.classList.add("fa-solid", "fa-trash-can");
+      deleteIcon.classList.add("delete-icon");
+      imageContainer.appendChild(deleteIcon);
+      
+  if (index === 0) {
+    const arrowsIcon = document.createElement("i");
+    arrowsIcon.classList.add("fa-solid", "fa-arrows-up-down-left-right");
+    arrowsIcon.classList.add("arrows-icon");
+    imageContainer.appendChild(arrowsIcon);
+    
+  }
+
+
+  figure.appendChild(imageContainer);
+
+  const editCaption = document.createElement("figcaption");
+  const editText = document.createElement("span");
+  editText.textContent = "éditer";
+  editCaption.appendChild(editText);
+  
+
+
+  figure.appendChild(editCaption);
+
+      galleryWrapper.appendChild(figure);
+      
+      
+    });
+
+    const inputContainer = document.createElement("div");
+    inputContainer.classList.add("centered-element");
+    modalWrapper.appendChild(inputContainer);
+    
+    const inputSubmit = document.createElement("input");
+    inputSubmit.type = "submit2";
+    inputSubmit.value = "Ajouter une photo";
+    inputContainer.appendChild(inputSubmit);
+    
+    const deleteGalleryText = document.createElement("p");
+    deleteGalleryText.textContent = "Supprimer la galerie";
+    deleteGalleryText.style.color = "red";
+    inputContainer.appendChild(deleteGalleryText);
+    
     // Une fois que les images sont chargées, appliquer le filtrage par défaut
     filterImages("tous");
   })
@@ -440,6 +551,78 @@ footer.appendChild(navFooter);
 document.body.appendChild(header);
 document.body.appendChild(main);
 document.body.appendChild(footer);
+
+
+// Création de la modale
+const modal = document.createElement("div");
+modal.classList.add("modal");
+
+// Création du wrapper
+const modalWrapper = document.createElement("div");
+modalWrapper.classList.add("modal__wrapper");
+
+// Ajout du contenu à la modale
+const title = document.createElement("h3");
+title.id = "title_modal";
+title.textContent = "Galerie photo";
+icon.style.color = "#ffffff"; 
+
+modalWrapper.appendChild(title);
+
+// Ajout du bouton de fermeture
+const closeButton = document.createElement("i");
+closeButton.classList.add("fa", "fa-xmark");
+modalWrapper.appendChild(closeButton);
+
+// Ajout du wrapper de la galerie d'images
+const galleryWrapper = document.createElement("div");
+galleryWrapper.classList.add("gallery__modal");
+// Ajout des images à la galerie 
+modalWrapper.appendChild(galleryWrapper);
+
+// Ajout de la modale au document
+
+modalWrapper.appendChild(closeButton);
+
+modal.appendChild(modalWrapper);
+document.body.appendChild(modal);
+
+// Gestionnaire d'événement de clic pour le bouton de fermeture
+closeButton.addEventListener("click", fermerModale);
+
+// Fonction pour fermer la modale
+function fermerModale() {
+  modal.style.display = "none";
+}
+modal.addEventListener("click", function(e) {
+  // Vérifie si le clic est en dehors du contenu de la modale
+  if (e.target === modal) {
+    fermerModale();
+  }
+});
+// Vérification pour contrôler l'affichage du modal lors du chargement de la page
+document.addEventListener("DOMContentLoaded", function() {
+  // Fermer le modal au chargement de la page
+  fermerModale();
+});
+button2.addEventListener("click", ouvrirModale);
+
+// Gestionnaire d'événement de clic pour le deuxième bouton de texte
+button2Text.addEventListener("click", ouvrirModale);
+
+// Fonction pour ouvrir le modal
+function ouvrirModale() {
+  modal.style.display = "block";
+  modalWrapper.style.display = "block";
+  
+  // Insérez ici le code pour ajouter le contenu souhaité à la galerie
+  // par exemple : galleryWrapper.appendChild(image);
+}
+
+
+
+
+
 
 
 
