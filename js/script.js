@@ -474,7 +474,138 @@ fetch('http://localhost:5678/api/works')
       
       
     });
+// 2ème Modal------------------------------
+// Ajout de la modale au document
+modal.appendChild(modalWrapper);
+document.body.appendChild(modal);
+// Gestionnaire d'événement de clic pour le bouton de fermeture
+closeButton.addEventListener("click", fermerModale);
+// Fonction pour fermer la modale
+function fermerModale() {
+  modal.style.display = "none";
+}
+// Vérification pour contrôler l'affichage du modal lors du chargement de la page
+document.addEventListener("DOMContentLoaded", function() {
+  // Fermer le modal au chargement de la page
+  fermerModale();
+});
+// Fonction pour ouvrir le modal
+function ouvrirModale() {
+  // Effacer le contenu du modal
+  galleryWrapper.innerHTML = '';
+
+  // Supprimer le titre s'il existe déjà dans le modal
+  const existingTitle = modalWrapper.querySelector("h3");
+  if (existingTitle) {
+    modalWrapper.removeChild(existingTitle);
+  }
+
+  // Créer un nouveau titre
+  const title = document.createElement("h3");
+  title.textContent = "Ajout photo";
+  title.style.color = "black";
+  title.id = "title_modal2";
+
+  // Ajoute le titre au 2ème modal
+  modalWrapper.appendChild(title);
+  // Ajoute un champ pour charger une image
+ // Créer un conteneur pour regrouper l'icône et le champ d'entrée
+ const imageContainer = document.createElement("div");
+imageContainer.classList.add("input-container");
+
+const imageLabel = document.createElement("label");
+
+const imageIcon = document.createElement("i");
+imageIcon.classList.add("fa-solid", "fa-image");
+imageIcon.style.color = "#bababa";
+imageLabel.appendChild(imageIcon);
+
+
+const addButton = document.createElement("button");
+addButton.textContent = "+ Ajouter photo";
+imageLabel.appendChild(addButton);
+// Ajout d'un gestionnaire d'événements au bouton pour déclencher le clic sur l'input de type "file"
+addButton.addEventListener("click", function() {
+  imageInput.click(); // Cliquez sur l'input de type "file" pour afficher la boîte de dialogue de sélection de fichiers
+});
+
+const fileSizeText = document.createElement("p");
+fileSizeText.textContent = "jpg, png : 4mo max";
+imageLabel.appendChild(fileSizeText);
+
+const imageInput = document.createElement("input");
+imageInput.type = "file";
+imageInput.accept = "image/*";
+imageInput.style.display = "none";
+
+const inputTitle = document.createElement("h4");
+inputTitle.textContent = "Titre"; 
+inputTitle.classList.add("custom-input-title");
+// Ajouter une classe personnalisée au titre (facultatif)
+const customTitleClass = "custom-title"; 
+inputTitle.classList.add(customTitleClass);
+
+
+const titleInput = document.createElement("input");
+titleInput.type = "text";
+titleInput.placeholder = "";
+
+
+const customPlaceholder = "custom-placeholder"; // Remplacez "custom-placeholder" par le nom de classe souhaité
+titleInput.classList.add(customPlaceholder);
+
+const customSelectionClass = "custom-selection";
+
+imageInput.appendChild(imageLabel);
+imageContainer.appendChild(imageLabel);
+modalWrapper.appendChild(imageContainer);
+
+// Ajouter le titre au conteneur principal
+modalWrapper.appendChild(inputTitle);
+modalWrapper.appendChild(titleInput);
+
+const secondTitleInput = document.createElement("input");
+secondTitleInput.type = "text";
+secondTitleInput.placeholder = "";
+secondTitleInput.classList.add(customSelectionClass); // Appliquer la classe custom-selection à ce champ
+
+// Ajouter le deuxième champ de saisie au conteneur principal
+modalWrapper.appendChild(secondTitleInput);
+ 
+  // Supprimer le formulaire s'il existe déjà dans le modal
+  const existingForm = modalWrapper.querySelector(".centered-element");
+  if (existingForm) {
+    modalWrapper.removeChild(existingForm);
+  }
+
+  // Créer un nouveau formulaire pour ajouter une photo (ou tout autre contenu)
+  const formContainer = document.createElement("div");
+  formContainer.classList.add("centered-element");
+
+  const inputSubmit3 = document.createElement("input");
+  inputSubmit3.type = "submit3";
+  inputSubmit3.value = "Valider";
+  formContainer.appendChild(inputSubmit3);
+
+  // Gestionnaire d'événement pour le bouton "Ajouter une photo"
+  inputSubmit3.addEventListener("click", function() {
     
+  });
+
+  const deleteGalleryText = document.createElement("p");
+  deleteGalleryText.textContent = "";
+  deleteGalleryText.style.color = "";
+  formContainer.appendChild(deleteGalleryText);
+
+  // Ajouter le formulaire au wrapper de la galerie
+  modalWrapper.appendChild(formContainer);
+
+  // Afficher le modal
+  modal.style.display = "block";
+  modalWrapper.style.display = "block";
+}
+// ----------------------------------------------------
+
 
     const inputContainer = document.createElement("div");
     inputContainer.classList.add("centered-element");
@@ -485,6 +616,8 @@ fetch('http://localhost:5678/api/works')
     inputSubmit.value = "Ajouter une photo";
     inputContainer.appendChild(inputSubmit);
     
+    inputSubmit.addEventListener("click", ouvrirModale);
+
     const deleteGalleryText = document.createElement("p");
     deleteGalleryText.textContent = "Supprimer la galerie";
     deleteGalleryText.style.color = "red";
