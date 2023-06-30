@@ -166,6 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+
 // Création du contenu principal
 const main = document.createElement("main");
 
@@ -293,6 +294,17 @@ fetch('http://localhost:5678/api/categories')
 
     // Une fois que les catégories sont chargées, on peut charger les projets
     loadWorks();
+
+    // Vérifier si l'utilisateur est connecté en vérifiant la présence du token dans le stockage local
+    const userLoggedIn = localStorage.getItem('token');
+
+    if (userLoggedIn) {
+      // Masquer les catégories
+      const categorySpans = divItems.querySelectorAll("span");
+      categorySpans.forEach(span => {
+        span.style.display = "none";
+      });
+    }
   })
   .catch(error => {
     console.error('Erreur lors de la récupération des catégories:', error);
@@ -319,6 +331,17 @@ divItems.addEventListener("click", function (event) {
     }
   }
 });
+// Affiche toutes les images via la gallery
+span1.addEventListener("click", function() {
+  const spans = divItems.querySelectorAll("span");
+  spans.forEach(function(span) {
+    span.classList.remove("active");
+  });
+  span1.classList.add("active");
+
+  displayWorks(0);
+});
+
 
 function loadWorks() {
   // Chargement des projets à partir de l'API
@@ -394,7 +417,7 @@ fetch('http://localhost:5678/api/works')
   .then(response => response.json())
   .then(data => {
     const projects = data;
-
+    const gallery = document.querySelector('.gallery',);
   const galleryWrapper = document.querySelector('.gallery__modal');
     galleryWrapper.innerHTML = '';
 
@@ -413,6 +436,19 @@ fetch('http://localhost:5678/api/works')
       deleteIcon.classList.add("fa-solid", "fa-trash-can");
       deleteIcon.classList.add("delete-icon");
       imageContainer.appendChild(deleteIcon);
+      deleteIcon.addEventListener("click", function() {
+        // Code pour supprimer l'image ici
+        // vous pouvez supprimer l'élément parent de l'icône (imageContainer)
+        const parentFigure = deleteIcon.parentElement.parentElement;
+        parentFigure.remove();
+
+        const galleryImage = gallery.querySelector(`img[src="${project.imageUrl}"]`);
+        if (galleryImage) {
+          const galleryFigure = galleryImage.parentElement;
+          galleryFigure.remove();
+        }
+      });
+      
       
   if (index === 0) {
     const arrowsIcon = document.createElement("i");
@@ -438,6 +474,7 @@ fetch('http://localhost:5678/api/works')
       
       
     });
+    
 
     const inputContainer = document.createElement("div");
     inputContainer.classList.add("centered-element");
@@ -460,26 +497,72 @@ fetch('http://localhost:5678/api/works')
     console.error('Une erreur s\'est produite lors de la récupération des données :', error);
   });
 
-// Ajouter un gestionnaire d'événement au conteneur des spans
-divItems.addEventListener("click", function (event) {
-  if (event.target.tagName === "SPAN") {
-    const spans = divItems.querySelectorAll("span");
-    spans.forEach(function (span) {
-      span.classList.remove("active");
-    });
+  sectionPortfolio.appendChild(divGallery);
+  main.appendChild(sectionPortfolio);
 
-    event.target.classList.add("active");
+  // Création de la modale
+const modal = document.createElement("div");
+modal.classList.add("modal");
 
-    const category = event.target.innerText.toLowerCase();
+// Création du wrapper
+const modalWrapper = document.createElement("div");
+modalWrapper.classList.add("modal__wrapper");
 
-    // Appliquer le filtrage des images en fonction de la catégorie sélectionnée
-    filterImages(category);
+// Ajout du contenu à la modale
+const title = document.createElement("h3");
+title.id = "title_modal";
+title.textContent = "Galerie photo";
+icon.style.color = "#ffffff"; 
+
+modalWrapper.appendChild(title);
+
+// Ajout du bouton de fermeture
+const closeButton = document.createElement("i");
+closeButton.classList.add("fa", "fa-xmark");
+modalWrapper.appendChild(closeButton);
+
+// Ajout du wrapper de la galerie d'images
+const galleryWrapper = document.createElement("div");
+galleryWrapper.classList.add("gallery__modal");
+// Ajout des images à la galerie 
+modalWrapper.appendChild(galleryWrapper);
+
+// Ajout de la modale au document
+
+modalWrapper.appendChild(closeButton);
+
+modal.appendChild(modalWrapper);
+document.body.appendChild(modal);
+
+// Gestionnaire d'événement de clic pour le bouton de fermeture
+closeButton.addEventListener("click", fermerModale);
+
+// Fonction pour fermer la modale
+function fermerModale() {
+  modal.style.display = "none";
+}
+modal.addEventListener("click", function(e) {
+  // Vérifie si le clic est en dehors du contenu de la modale
+  if (e.target === modal) {
+    fermerModale();
   }
 });
+// Vérification pour contrôler l'affichage du modal lors du chargement de la page
+document.addEventListener("DOMContentLoaded", function() {
+  // Fermer le modal au chargement de la page
+  fermerModale();
+});
+button2.addEventListener("click", ouvrirModale);
 
-sectionPortfolio.appendChild(divGallery);
-main.appendChild(sectionPortfolio);
+// Gestionnaire d'événement de clic pour le deuxième bouton de texte
+button2Text.addEventListener("click", ouvrirModale);
 
+// Fonction pour ouvrir le modal
+function ouvrirModale() {
+  modal.style.display = "block";
+  modalWrapper.style.display = "block";
+  
+}
 
 // Section contact----------------------------------------------------------------------------
 const sectionContact = document.createElement("section");
@@ -551,78 +634,5 @@ footer.appendChild(navFooter);
 document.body.appendChild(header);
 document.body.appendChild(main);
 document.body.appendChild(footer);
-
-
-// Création de la modale
-const modal = document.createElement("div");
-modal.classList.add("modal");
-
-// Création du wrapper
-const modalWrapper = document.createElement("div");
-modalWrapper.classList.add("modal__wrapper");
-
-// Ajout du contenu à la modale
-const title = document.createElement("h3");
-title.id = "title_modal";
-title.textContent = "Galerie photo";
-icon.style.color = "#ffffff"; 
-
-modalWrapper.appendChild(title);
-
-// Ajout du bouton de fermeture
-const closeButton = document.createElement("i");
-closeButton.classList.add("fa", "fa-xmark");
-modalWrapper.appendChild(closeButton);
-
-// Ajout du wrapper de la galerie d'images
-const galleryWrapper = document.createElement("div");
-galleryWrapper.classList.add("gallery__modal");
-// Ajout des images à la galerie 
-modalWrapper.appendChild(galleryWrapper);
-
-// Ajout de la modale au document
-
-modalWrapper.appendChild(closeButton);
-
-modal.appendChild(modalWrapper);
-document.body.appendChild(modal);
-
-// Gestionnaire d'événement de clic pour le bouton de fermeture
-closeButton.addEventListener("click", fermerModale);
-
-// Fonction pour fermer la modale
-function fermerModale() {
-  modal.style.display = "none";
-}
-modal.addEventListener("click", function(e) {
-  // Vérifie si le clic est en dehors du contenu de la modale
-  if (e.target === modal) {
-    fermerModale();
-  }
-});
-// Vérification pour contrôler l'affichage du modal lors du chargement de la page
-document.addEventListener("DOMContentLoaded", function() {
-  // Fermer le modal au chargement de la page
-  fermerModale();
-});
-button2.addEventListener("click", ouvrirModale);
-
-// Gestionnaire d'événement de clic pour le deuxième bouton de texte
-button2Text.addEventListener("click", ouvrirModale);
-
-// Fonction pour ouvrir le modal
-function ouvrirModale() {
-  modal.style.display = "block";
-  modalWrapper.style.display = "block";
-  
-  // Insérez ici le code pour ajouter le contenu souhaité à la galerie
-  // par exemple : galleryWrapper.appendChild(image);
-}
-
-
-
-
-
-
 
 
