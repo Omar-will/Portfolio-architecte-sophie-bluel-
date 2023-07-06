@@ -280,7 +280,7 @@ footer nav ul {
 	background-color: transparent;
   }
 
-  .modal {
+  .modal, .modal3 {
 	position: absolute;
 	top: -50rem;
 	left: 0;
@@ -383,7 +383,7 @@ footer nav ul {
 	flex-direction: column;
   }
 
-  input[type="submit2"]{
+  .modal1button{
 	font-family: 'Syne';
 	font-weight: 700;
 	color: white;
@@ -418,13 +418,15 @@ footer nav ul {
   font-size: 26px;
 }
 
-input[type="submit3"] {
+.custom-button {
 	font-family: 'Syne';
 	font-weight: 700;
 	font-size: 14px;
 	color: white;
 	background-color: #A7A7A7;
-	margin : 2em auto ;
+	margin-top: 7rem;
+	margin-left: 11rem;
+	margin-bottom: 3rem;
 	width: 260px;
 	padding: 10px;
 	text-align: center;
@@ -482,7 +484,7 @@ input[type="submit3"] {
 	box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
   }
   
-  .custom-input-title {
+  .custom-input-title, .above-category-select-text {
 	margin-left: 5rem;
 	margin-top: 2rem;
 	margin-bottom: 10px;
@@ -493,15 +495,18 @@ input[type="submit3"] {
 	text-align: left;
 	padding-left: 1rem;
 	font-size: 16px;
-	margin-top: 2rem;
 	margin-left: 5rem;
 	font-size: 16px;
 	font-family: 'Work Sans';
-	width: 28.2rem;
+	width: 29.4rem;
 	height: 4rem;
+	background-color: white;
 	border: 0px solid #CBD6DC;
 	box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
+
+
+
 
   
 /* *{

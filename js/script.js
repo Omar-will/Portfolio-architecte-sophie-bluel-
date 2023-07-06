@@ -24,7 +24,7 @@ async function fetchData() {
   worksData = works;
   const categories = await fetchCategory();
   displayProjectAndCategories(categories, works);
-};
+}
 
 // Création de la barre noire
 const blackBar = document.createElement("div");
@@ -38,11 +38,10 @@ blackBar.style.alignItems = "center";
 blackBar.style.fontFamily = "'Work Sans'";
 blackBar.style.zIndex = "999";
 
-
 // Création de l'icône
 const icon = document.createElement("i");
 icon.className = "far fa-pen-to-square transparent-bg";
-icon.style.color = "#ffffff"; 
+icon.style.color = "#ffffff";
 icon.style.marginRight = "15px";
 icon.style.fontSize = "22px";
 const text1 = document.createElement("span");
@@ -60,13 +59,11 @@ bubble.style.display = "inline-block";
 bubble.style.textAlign = "center";
 bubble.style.fontWeight = "600";
 
-
 // Ajout des éléments à la barre noire
 blackBar.appendChild(icon);
 blackBar.appendChild(text1);
 blackBar.appendChild(bubble);
 document.body.appendChild(blackBar);
-
 
 // Création de l'en-tête
 const header = document.createElement("header");
@@ -79,7 +76,7 @@ h1.appendChild(span);
 header.appendChild(h1);
 
 // Récupération de l'élément parent de l'en-tête
-const parentElement = document.body; 
+const parentElement = document.body;
 
 // Insérer la barre noire avant l'en-tête
 parentElement.insertAdjacentElement("beforebegin", blackBar);
@@ -99,8 +96,8 @@ const liInstagram = document.createElement("li");
 const imgInstagram = document.createElement("img");
 imgInstagram.src = "./assets/icons/instagram.png";
 imgInstagram.alt = "Instagram";
-imgInstagram.style.width = '20px';
-imgInstagram.style.height = 'auto'
+imgInstagram.style.width = "20px";
+imgInstagram.style.height = "auto";
 liInstagram.appendChild(imgInstagram);
 
 ul.appendChild(liProjets);
@@ -114,17 +111,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const liLogin = document.getElementById("login");
   const spansToHide = document.querySelectorAll(".hide-span");
   // Vérifie si l'utilisateur est connecté en vérifiant la présence du token dans le stockage local
-  if (localStorage.getItem('token')) {
+  if (localStorage.getItem("token")) {
     blackBar.style.display = "flex";
     // Remplace le lien "login" par un bouton "logout"
-    liLogin.innerHTML = '';
+    liLogin.innerHTML = "";
     const linkLogout = document.createElement("a");
     linkLogout.innerText = "Logout";
     linkLogout.href = "#";
     linkLogout.style.textDecoration = "none";
     linkLogout.style.color = "inherit";
     linkLogout.addEventListener("click", () => {
-      localStorage.removeItem('token');
+      localStorage.removeItem("token");
       window.location.href = "./index.html";
     });
 
@@ -141,7 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loginLink.href = "./login.html";
     loginLink.style.textDecoration = "none";
     loginLink.style.color = "inherit";
-    loginLink.classList.add("link-style"); 
+    loginLink.classList.add("link-style");
     liLogin.appendChild(loginLink);
     // Afficher les <span>
     spansToHide.forEach((span) => {
@@ -166,7 +163,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-
 // Création du contenu principal
 const main = document.createElement("main");
 
@@ -180,7 +176,6 @@ img.src = "./assets/images/sophie-bluel.png";
 img.alt = "sophie-bluel";
 figure.appendChild(img);
 sectionIntroduction.appendChild(figure);
-
 
 const icon3 = document.createElement("i");
 icon3.className = "far fa-pen-to-square";
@@ -198,9 +193,8 @@ text3.style.cursor = "pointer";
 text3.style.color = "#1D6154";
 text3.style.fontSize = "16px";
 
-img.insertAdjacentElement('afterend', icon3);
-icon3.insertAdjacentElement('afterend', text3);
-
+img.insertAdjacentElement("afterend", icon3);
+icon3.insertAdjacentElement("afterend", text3);
 
 const article = document.createElement("article");
 const h2Introduction = document.createElement("h2");
@@ -227,7 +221,6 @@ main.appendChild(sectionIntroduction);
 const sectionPortfolio = document.createElement("section");
 sectionPortfolio.id = "portfolio";
 
-
 const flexContainer = document.createElement("div");
 flexContainer.style.display = "flex";
 flexContainer.style.alignItems = "center";
@@ -235,7 +228,6 @@ flexContainer.style.justifyContent = "center";
 
 const h2Portfolio = document.createElement("h2");
 h2Portfolio.innerText = "Mes Projets";
-
 
 const button2 = document.createElement("button");
 button2.style.backgroundColor = "transparent";
@@ -245,7 +237,8 @@ button2.style.marginRight = "10px";
 button2.style.marginLeft = "40px";
 button2.style.padding = "0";
 button2.style.fontSize = "22px";
-button2.innerHTML = '<i class="far fa-pen-to-square" style="color: #1D6154;"></i>';
+button2.innerHTML =
+  '<i class="far fa-pen-to-square" style="color: #1D6154;"></i>';
 
 const button2Text = document.createElement("span");
 button2Text.innerText = "Modifier";
@@ -280,12 +273,12 @@ let categories = [];
 let works = [];
 
 // Récupération des catégories à partir de l'API
-fetch('http://localhost:5678/api/categories')
-  .then(response => response.json())
-  .then(data => {
+fetch("http://localhost:5678/api/categories")
+  .then((response) => response.json())
+  .then((data) => {
     categories = data;
 
-    categories.forEach(category => {
+    categories.forEach((category) => {
       const span = document.createElement("span");
       span.innerText = category.name;
       span.classList.add("hide-span");
@@ -295,19 +288,19 @@ fetch('http://localhost:5678/api/categories')
     // Une fois que les catégories sont chargées, on peut charger les projets
     loadWorks();
 
-    // Vérifier si l'utilisateur est connecté en vérifiant la présence du token dans le stockage local
-    const userLoggedIn = localStorage.getItem('token');
+    // Vérifie si l'utilisateur est connecté en vérifiant la présence du token dans le stockage local
+    const userLoggedIn = localStorage.getItem("token");
 
     if (userLoggedIn) {
       // Masquer les catégories
       const categorySpans = divItems.querySelectorAll("span");
-      categorySpans.forEach(span => {
+      categorySpans.forEach((span) => {
         span.style.display = "none";
       });
     }
   })
-  .catch(error => {
-    console.error('Erreur lors de la récupération des catégories:', error);
+  .catch((error) => {
+    console.error("Erreur lors de la récupération des catégories:", error);
   });
 
 sectionPortfolio.appendChild(divItems);
@@ -324,7 +317,9 @@ divItems.addEventListener("click", function (event) {
     const categoryName = event.target.innerText;
 
     // Récupérer l'identifiant de catégorie correspondant au nom de catégorie
-    const category = categories.find(category => category.name === categoryName);
+    const category = categories.find(
+      (category) => category.name === categoryName
+    );
     if (category) {
       const categoryId = category.id;
       displayWorks(categoryId);
@@ -332,9 +327,9 @@ divItems.addEventListener("click", function (event) {
   }
 });
 // Affiche toutes les images via la gallery
-span1.addEventListener("click", function() {
+span1.addEventListener("click", function () {
   const spans = divItems.querySelectorAll("span");
-  spans.forEach(function(span) {
+  spans.forEach(function (span) {
     span.classList.remove("active");
   });
   span1.classList.add("active");
@@ -342,24 +337,26 @@ span1.addEventListener("click", function() {
   displayWorks(0);
 });
 
-
 function loadWorks() {
   // Chargement des projets à partir de l'API
-  fetch('http://localhost:5678/api/works')
-    .then(response => response.json())
-    .then(data => {
+  fetch("http://localhost:5678/api/works")
+    .then((response) => response.json())
+    .then((data) => {
       works = data;
       displayWorks(0);
     })
-    .catch(error => {
-      console.error('Erreur lors du chargement des projets:', error);
+    .catch((error) => {
+      console.error("Erreur lors du chargement des projets:", error);
     });
 }
 
 function displayWorks(categoryId) {
   divGallery.innerHTML = "";
 
-  const filteredWorks = categoryId !== 0 ? works.filter((work) => work.categoryId === categoryId) : works;
+  const filteredWorks =
+    categoryId !== 0
+      ? works.filter((work) => work.categoryId === categoryId)
+      : works;
 
   filteredWorks.forEach((work) => {
     const figure = document.createElement("figure");
@@ -381,18 +378,17 @@ function filterImages(categoryId) {
   });
 }
 
-
 // Récupére les images depuis l'API
-fetch('http://localhost:5678/api/works')
-  .then(response => response.json())
-  .then(data => {
+fetch("http://localhost:5678/api/works")
+  .then((response) => response.json())
+  .then((data) => {
     const projects = data;
 
     // Utilise les données récupérées pour afficher les images sur votre site
-    const gallery = document.querySelector('.gallery',);
-    gallery.innerHTML = '';
+    const gallery = document.querySelector(".gallery");
+    gallery.innerHTML = "";
 
-    projects.forEach(project => {
+    projects.forEach((project) => {
       const figure = document.createElement("figure");
       const image = document.createElement("img");
       image.src = project.imageUrl;
@@ -408,18 +404,21 @@ fetch('http://localhost:5678/api/works')
     // Une fois que les images sont chargées, appliquer le filtrage par défaut
     filterImages("tous");
   })
-  .catch(error => {
-    console.error('Une erreur s\'est produite lors de la récupération des données :', error);
+  .catch((error) => {
+    console.error(
+      "Une erreur s'est produite lors de la récupération des données :",
+      error
+    );
   });
 
 // Récupére les images du modal depuis l'API
-fetch('http://localhost:5678/api/works')
-  .then(response => response.json())
-  .then(data => {
+fetch("http://localhost:5678/api/works")
+  .then((response) => response.json())
+  .then((data) => {
     const projects = data;
-    const gallery = document.querySelector('.gallery',);
-  const galleryWrapper = document.querySelector('.gallery__modal');
-    galleryWrapper.innerHTML = '';
+    const gallery = document.querySelector(".gallery");
+    const galleryWrapper = document.querySelector(".gallery__modal");
+    galleryWrapper.innerHTML = "";
 
     projects.forEach((project, index) => {
       const figure = document.createElement("figure");
@@ -436,204 +435,77 @@ fetch('http://localhost:5678/api/works')
       deleteIcon.classList.add("fa-solid", "fa-trash-can");
       deleteIcon.classList.add("delete-icon");
       imageContainer.appendChild(deleteIcon);
-      deleteIcon.addEventListener("click", function() {
+      deleteIcon.addEventListener("click", function () {
         // Code pour supprimer l'image ici
         // vous pouvez supprimer l'élément parent de l'icône (imageContainer)
         const parentFigure = deleteIcon.parentElement.parentElement;
         parentFigure.remove();
 
-        const galleryImage = gallery.querySelector(`img[src="${project.imageUrl}"]`);
+        const galleryImage = gallery.querySelector(
+          `img[src="${project.imageUrl}"]`
+        );
         if (galleryImage) {
           const galleryFigure = galleryImage.parentElement;
           galleryFigure.remove();
         }
       });
-      
-      
-  if (index === 0) {
-    const arrowsIcon = document.createElement("i");
-    arrowsIcon.classList.add("fa-solid", "fa-arrows-up-down-left-right");
-    arrowsIcon.classList.add("arrows-icon");
-    imageContainer.appendChild(arrowsIcon);
-    
-  }
 
+      if (index === 0) {
+        const arrowsIcon = document.createElement("i");
+        arrowsIcon.classList.add("fa-solid", "fa-arrows-up-down-left-right");
+        arrowsIcon.classList.add("arrows-icon");
+        imageContainer.appendChild(arrowsIcon);
+      }
 
-  figure.appendChild(imageContainer);
+      figure.appendChild(imageContainer);
 
-  const editCaption = document.createElement("figcaption");
-  const editText = document.createElement("span");
-  editText.textContent = "éditer";
-  editCaption.appendChild(editText);
-  
+      const editCaption = document.createElement("figcaption");
+      const editText = document.createElement("span");
+      editText.textContent = "éditer";
+      editCaption.appendChild(editText);
 
-
-  figure.appendChild(editCaption);
+      figure.appendChild(editCaption);
 
       galleryWrapper.appendChild(figure);
-      
-      
     });
-// 2ème Modal------------------------------
-// Ajout de la modale au document
-modal.appendChild(modalWrapper);
-document.body.appendChild(modal);
-// Gestionnaire d'événement de clic pour le bouton de fermeture
-closeButton.addEventListener("click", fermerModale);
-// Fonction pour fermer la modale
-function fermerModale() {
-  modal.style.display = "none";
-}
-// Vérification pour contrôler l'affichage du modal lors du chargement de la page
-document.addEventListener("DOMContentLoaded", function() {
-  // Fermer le modal au chargement de la page
-  fermerModale();
-});
-// Fonction pour ouvrir le modal
-function ouvrirModale() {
-  // Effacer le contenu du modal
-  galleryWrapper.innerHTML = '';
+    //------------------------------
 
-  // Supprimer le titre s'il existe déjà dans le modal
-  const existingTitle = modalWrapper.querySelector("h3");
-  if (existingTitle) {
-    modalWrapper.removeChild(existingTitle);
-  }
-
-  // Créer un nouveau titre
-  const title = document.createElement("h3");
-  title.textContent = "Ajout photo";
-  title.style.color = "black";
-  title.id = "title_modal2";
-
-  // Ajoute le titre au 2ème modal
-  modalWrapper.appendChild(title);
-  // Ajoute un champ pour charger une image
- // Créer un conteneur pour regrouper l'icône et le champ d'entrée
- const imageContainer = document.createElement("div");
-imageContainer.classList.add("input-container");
-
-const imageLabel = document.createElement("label");
-
-const imageIcon = document.createElement("i");
-imageIcon.classList.add("fa-solid", "fa-image");
-imageIcon.style.color = "#bababa";
-imageLabel.appendChild(imageIcon);
-
-
-const addButton = document.createElement("button");
-addButton.textContent = "+ Ajouter photo";
-imageLabel.appendChild(addButton);
-// Ajout d'un gestionnaire d'événements au bouton pour déclencher le clic sur l'input de type "file"
-addButton.addEventListener("click", function() {
-  imageInput.click(); // Cliquez sur l'input de type "file" pour afficher la boîte de dialogue de sélection de fichiers
-});
-
-const fileSizeText = document.createElement("p");
-fileSizeText.textContent = "jpg, png : 4mo max";
-imageLabel.appendChild(fileSizeText);
-
-const imageInput = document.createElement("input");
-imageInput.type = "file";
-imageInput.accept = "image/*";
-imageInput.style.display = "none";
-
-const inputTitle = document.createElement("h4");
-inputTitle.textContent = "Titre"; 
-inputTitle.classList.add("custom-input-title");
-// Ajouter une classe personnalisée au titre (facultatif)
-const customTitleClass = "custom-title"; 
-inputTitle.classList.add(customTitleClass);
-
-
-const titleInput = document.createElement("input");
-titleInput.type = "text";
-titleInput.placeholder = "";
-
-
-const customPlaceholder = "custom-placeholder"; // Remplacez "custom-placeholder" par le nom de classe souhaité
-titleInput.classList.add(customPlaceholder);
-
-const customSelectionClass = "custom-selection";
-
-imageInput.appendChild(imageLabel);
-imageContainer.appendChild(imageLabel);
-modalWrapper.appendChild(imageContainer);
-
-// Ajouter le titre au conteneur principal
-modalWrapper.appendChild(inputTitle);
-modalWrapper.appendChild(titleInput);
-
-const secondTitleInput = document.createElement("input");
-secondTitleInput.type = "text";
-secondTitleInput.placeholder = "";
-secondTitleInput.classList.add(customSelectionClass); // Appliquer la classe custom-selection à ce champ
-
-// Ajouter le deuxième champ de saisie au conteneur principal
-modalWrapper.appendChild(secondTitleInput);
- 
-  // Supprimer le formulaire s'il existe déjà dans le modal
-  const existingForm = modalWrapper.querySelector(".centered-element");
-  if (existingForm) {
-    modalWrapper.removeChild(existingForm);
-  }
-
-  // Créer un nouveau formulaire pour ajouter une photo (ou tout autre contenu)
-  const formContainer = document.createElement("div");
-  formContainer.classList.add("centered-element");
-
-  const inputSubmit3 = document.createElement("input");
-  inputSubmit3.type = "submit3";
-  inputSubmit3.value = "Valider";
-  formContainer.appendChild(inputSubmit3);
-
-  // Gestionnaire d'événement pour le bouton "Ajouter une photo"
-  inputSubmit3.addEventListener("click", function() {
-    
-  });
-
-  const deleteGalleryText = document.createElement("p");
-  deleteGalleryText.textContent = "";
-  deleteGalleryText.style.color = "";
-  formContainer.appendChild(deleteGalleryText);
-
-  // Ajouter le formulaire au wrapper de la galerie
-  modalWrapper.appendChild(formContainer);
-
-  // Afficher le modal
-  modal.style.display = "block";
-  modalWrapper.style.display = "block";
-}
-// ----------------------------------------------------
-
+    // Ajout de la modal----------------------------------------------------
 
     const inputContainer = document.createElement("div");
     inputContainer.classList.add("centered-element");
     modalWrapper.appendChild(inputContainer);
     
-    const inputSubmit = document.createElement("input");
-    inputSubmit.type = "submit2";
-    inputSubmit.value = "Ajouter une photo";
-    inputContainer.appendChild(inputSubmit);
-    
-    inputSubmit.addEventListener("click", ouvrirModale);
 
+    const buttonSubmit = document.createElement("button");
+    buttonSubmit.type = "submit";
+    buttonSubmit.textContent = "Ajouter une photo";
+    buttonSubmit.classList.add("modal1button");
+    inputContainer.appendChild(buttonSubmit);
+
+    buttonSubmit.addEventListener("click", function () {
+      ouvrirDeuxiemeModale();
+      fermerModale();
+    });
     const deleteGalleryText = document.createElement("p");
     deleteGalleryText.textContent = "Supprimer la galerie";
     deleteGalleryText.style.color = "red";
     inputContainer.appendChild(deleteGalleryText);
-    
+
     // Une fois que les images sont chargées, appliquer le filtrage par défaut
     filterImages("tous");
   })
-  .catch(error => {
-    console.error('Une erreur s\'est produite lors de la récupération des données :', error);
+  .catch((error) => {
+    console.error(
+      "Une erreur s'est produite lors de la récupération des données :",
+      error
+    );
   });
 
-  sectionPortfolio.appendChild(divGallery);
-  main.appendChild(sectionPortfolio);
+sectionPortfolio.appendChild(divGallery);
+main.appendChild(sectionPortfolio);
 
-  // Création de la modale
+// Création de la modale
 const modal = document.createElement("div");
 modal.classList.add("modal");
 
@@ -645,7 +517,7 @@ modalWrapper.classList.add("modal__wrapper");
 const title = document.createElement("h3");
 title.id = "title_modal";
 title.textContent = "Galerie photo";
-icon.style.color = "#ffffff"; 
+icon.style.color = "#ffffff";
 
 modalWrapper.appendChild(title);
 
@@ -657,10 +529,25 @@ modalWrapper.appendChild(closeButton);
 // Ajout du wrapper de la galerie d'images
 const galleryWrapper = document.createElement("div");
 galleryWrapper.classList.add("gallery__modal");
-// Ajout des images à la galerie 
+// Ajout des images à la galerie
 modalWrapper.appendChild(galleryWrapper);
 
 // Ajout de la modale au document
+modal.appendChild(modalWrapper);
+document.body.appendChild(modal);
+// Gestionnaire d'événement de clic pour le bouton de fermeture
+closeButton.addEventListener("click", fermerModale);
+// Fonction pour fermer la modale
+function fermerModale() {
+  modal.style.display = "none";
+}
+// Vérification pour contrôler l'affichage du modal lors du chargement de la page
+document.addEventListener("DOMContentLoaded", function () {
+  // Fermer le modal au chargement de la page
+  fermerModale();
+  // ouvrirGalerieModal();
+});
+function ouvrirModale() {}
 
 modalWrapper.appendChild(closeButton);
 
@@ -674,14 +561,14 @@ closeButton.addEventListener("click", fermerModale);
 function fermerModale() {
   modal.style.display = "none";
 }
-modal.addEventListener("click", function(e) {
+modal.addEventListener("click", function (e) {
   // Vérifie si le clic est en dehors du contenu de la modale
   if (e.target === modal) {
     fermerModale();
   }
 });
 // Vérification pour contrôler l'affichage du modal lors du chargement de la page
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   // Fermer le modal au chargement de la page
   fermerModale();
 });
@@ -694,8 +581,167 @@ button2Text.addEventListener("click", ouvrirModale);
 function ouvrirModale() {
   modal.style.display = "block";
   modalWrapper.style.display = "block";
-  
 }
+// Ajout deuxième modal--------------------------------------------------
+
+function createSecondModal() {
+  const modal2 = document.createElement("div");
+  modal2.classList.add("modal3");
+  
+
+  const modalWrapper2 = document.createElement("div");
+  modalWrapper2.classList.add("modal__wrapper");
+
+  const title2 = document.createElement("h3");
+  title2.id = "title_modal2";
+  title2.textContent = "Ajout photo";
+  modalWrapper2.appendChild(title2);
+
+  const backArrowIcon = document.createElement("i");
+  backArrowIcon.classList.add("fa", "fa-chevron-left", "back-arrow-icon");
+  backArrowIcon.addEventListener("click", function () {
+    fermerDeuxiemeModale();
+    ouvrirModale(); // Appeler la fonction pour ouvrir le premier modal
+  });
+  modalWrapper2.insertBefore(backArrowIcon, modalWrapper2.firstChild);
+
+  const closeButton2 = document.createElement("i");
+  closeButton2.classList.add("fa", "fa-xmark");
+  modalWrapper2.appendChild(closeButton2);
+  // Ajoute un champ pour charger une image
+  // Créer un conteneur pour regrouper l'icône et le champ d'entrée
+  const imageContainer = document.createElement("div");
+  imageContainer.classList.add("input-container");
+
+  const imageLabel = document.createElement("label");
+
+  const imageIcon = document.createElement("i");
+  imageIcon.classList.add("fa-solid", "fa-image");
+  imageIcon.style.color = "#bababa";
+  imageLabel.appendChild(imageIcon);
+
+  const addButton = document.createElement("button");
+  addButton.textContent = "+ Ajouter photo";
+  imageLabel.appendChild(addButton);
+
+  addButton.addEventListener("click", function () {
+    imageInput.click();
+  });
+
+  const fileSizeText = document.createElement("p");
+  fileSizeText.textContent = "jpg, png : 4mo max";
+  imageLabel.appendChild(fileSizeText);
+
+  const imageInput = document.createElement("input");
+  imageInput.type = "file";
+  imageInput.accept = "image/*";
+  imageInput.style.display = "none";
+
+  const inputTitle = document.createElement("h4");
+  inputTitle.textContent = "Titre";
+  inputTitle.classList.add("custom-input-title");
+  const customTitleClass = "custom-title";
+  inputTitle.classList.add(customTitleClass);
+
+  const titleInput = document.createElement("input");
+  titleInput.type = "text";
+  titleInput.placeholder = "";
+
+  const customPlaceholder = "custom-placeholder";
+  titleInput.classList.add(customPlaceholder);
+
+  const aboveCategorySelectText = document.createElement("p");
+  aboveCategorySelectText.textContent = "Catégorie";
+  aboveCategorySelectText.classList.add("above-category-select-text");
+  modalWrapper2.appendChild(aboveCategorySelectText);
+
+  const customSelectionClass = "custom-selection";
+  const categorySelect = document.createElement("select");
+  categorySelect.classList.add(customSelectionClass);
+
+  const emptyOption = document.createElement("option");
+  categorySelect.appendChild(emptyOption);
+
+  fetch("http://localhost:5678/api/categories")
+    .then((response) => response.json())
+    .then((data) => {
+      const categories = data;
+      categories.forEach((category) => {
+        const option = document.createElement("option");
+        option.value = category.id;
+        option.textContent = category.name;
+        categorySelect.appendChild(option);
+      });
+    });
+
+  imageContainer.appendChild(imageLabel);
+
+  modalWrapper2.appendChild(imageContainer);
+  modalWrapper2.appendChild(inputTitle);
+  modalWrapper2.appendChild(titleInput);
+  modalWrapper2.appendChild(aboveCategorySelectText);
+  modalWrapper2.appendChild(categorySelect);
+
+  const buttonSubmit3 = document.createElement("button");
+  buttonSubmit3.type = "submit";
+  buttonSubmit3.textContent = "Valider";
+  buttonSubmit3.classList.add("custom-button");
+  modalWrapper2.appendChild(buttonSubmit3);
+
+  modal2.appendChild(modalWrapper2);
+
+  // Gestionnaire d'événement de clic pour le bouton de fermeture du deuxième modal
+  closeButton2.addEventListener("click", fermerDeuxiemeModale);
+
+  // Gestionnaire d'événement de clic pour l'arrière-plan du deuxième modal
+  modal2.addEventListener("click", function (e) {
+    if (e.target === modal2) {
+      fermerDeuxiemeModale();
+    }
+  });
+
+  return modal2;
+}
+
+// Fonction pour créer le deuxième modal
+let secondModal = null;
+let isSecondModalOpen = false;
+
+function ouvrirDeuxiemeModale() {
+  if (!isSecondModalOpen) {
+    // Ouvrir le deuxième modal uniquement s'il n'est pas déjà ouvert
+    secondModal.style.display = "block";
+    isSecondModalOpen = true; // Définir la variable pour indiquer que le deuxième modal est ouvert
+  }
+}
+
+function ouvrirDeuxiemeModale() {
+  if (isSecondModalOpen) {
+    return; // Si le deuxième modal est déjà ouvert, ne rien faire
+  }
+
+  if (!secondModal) {
+    secondModal = createSecondModal();
+    document.body.appendChild(secondModal);
+  }
+
+  secondModal.style.display = "block";
+  isSecondModalOpen = true;
+}
+
+function fermerDeuxiemeModale() {
+  if (secondModal) {
+    secondModal.style.display = "none";
+    isSecondModalOpen = false;
+  }
+}
+document.addEventListener("DOMContentLoaded", function () {
+  // Fermer le deuxième modal au chargement de la page
+  fermerDeuxiemeModale();
+});
+
+// // Appeler la fonction pour ouvrir le deuxième modal
+// ouvrirDeuxiemeModale();
 
 // Section contact----------------------------------------------------------------------------
 const sectionContact = document.createElement("section");
@@ -758,7 +804,6 @@ const liMentionsLegales = document.createElement("li");
 liMentionsLegales.innerText = "Mentions Légales";
 liMentionsLegales.style.marginRight = "50px";
 
-
 ulFooter.appendChild(liMentionsLegales);
 navFooter.appendChild(ulFooter);
 footer.appendChild(navFooter);
@@ -767,5 +812,3 @@ footer.appendChild(navFooter);
 document.body.appendChild(header);
 document.body.appendChild(main);
 document.body.appendChild(footer);
-
-
