@@ -1,3 +1,5 @@
+let worksData; // stockage des données (projets)
+let categoriesData; // stockage des categories
 // Fonction de récupération des catégories depuis l'API
 function fetchCategory() {
   return fetch("http://localhost:5678/api/categories")
@@ -25,39 +27,27 @@ async function fetchData() {
   const categories = await fetchCategory();
   displayProjectAndCategories(categories, works);
 }
-
+function displayProjectAndCategories(categories, works) {
+  // Logique de traitement et d'affichage des catégories et des projets
+  console.log("Categories:", categories);
+  console.log("Works:", works);
+  // Vous pouvez utiliser ces données pour générer dynamiquement du contenu HTML, mettre à jour l'interface utilisateur, etc.
+}
 // Création de la barre noire
 const blackBar = document.createElement("div");
-blackBar.style.backgroundColor = "black";
-blackBar.style.height = "70px";
-blackBar.style.width = "100%";
-blackBar.style.position = "fixed";
-blackBar.style.display = "flex";
-blackBar.style.justifyContent = "center";
-blackBar.style.alignItems = "center";
-blackBar.style.fontFamily = "'Work Sans'";
-blackBar.style.zIndex = "999";
+blackBar.classList.add("blackBar-style");
 
 // Création de l'icône
 const icon = document.createElement("i");
-icon.className = "far fa-pen-to-square transparent-bg";
-icon.style.color = "#ffffff";
-icon.style.marginRight = "15px";
-icon.style.fontSize = "22px";
+icon.className = "far fa-pen-to-square icon-style";
+
 const text1 = document.createElement("span");
 text1.innerText = "Mode édition";
-text1.className = "transparent-bg";
-text1.style.color = "#ffffff";
-text1.style.marginRight = "25px";
+text1.classList.add("text1-style", "transparent-bg1");
+
 const bubble = document.createElement("span");
 bubble.innerText = "publier les changements";
-bubble.style.borderRadius = "50px";
-bubble.style.backgroundColor = "white";
-bubble.style.padding = "12px";
-bubble.style.width = "220px";
-bubble.style.display = "inline-block";
-bubble.style.textAlign = "center";
-bubble.style.fontWeight = "600";
+bubble.classList.add("bubble-style");
 
 // Ajout des éléments à la barre noire
 blackBar.appendChild(icon);
@@ -179,19 +169,11 @@ sectionIntroduction.appendChild(figure);
 
 const icon3 = document.createElement("i");
 icon3.className = "far fa-pen-to-square";
-icon3.style.color = "#1D6154";
-icon3.style.marginRight = "10px";
-icon3.style.marginLeft = "60px";
-icon3.style.marginTop = "15px";
-icon3.style.fontSize = "22px";
+icon3.classList.add("icon3-style");
 
 const text3 = document.createElement("span");
 text3.innerText = "Modifier";
-text3.style.color = "#1D6154";
-text3.style.textTransform = "lowercase";
-text3.style.cursor = "pointer";
-text3.style.color = "#1D6154";
-text3.style.fontSize = "16px";
+text3.classList.add("text3-style");
 
 img.insertAdjacentElement("afterend", icon3);
 icon3.insertAdjacentElement("afterend", text3);
@@ -230,25 +212,12 @@ const h2Portfolio = document.createElement("h2");
 h2Portfolio.innerText = "Mes Projets";
 
 const button2 = document.createElement("button");
-button2.style.backgroundColor = "transparent";
-button2.style.border = "none";
-button2.style.cursor = "pointer";
-button2.style.marginRight = "10px";
-button2.style.marginLeft = "40px";
-button2.style.padding = "0";
-button2.style.fontSize = "22px";
-button2.innerHTML =
-  '<i class="far fa-pen-to-square" style="color: #1D6154;"></i>';
+button2.classList.add("button2-style");
+button2.innerHTML = '<i class="far fa-pen-to-square"></i>';
 
 const button2Text = document.createElement("span");
 button2Text.innerText = "Modifier";
-button2Text.style.color = "#1D6154";
-button2Text.style.fontSize = "14px";
-button2Text.style.marginLeft = "10px";
-button2Text.style.textTransform = "lowercase";
-button2Text.style.cursor = "pointer";
-button2Text.style.color = "#1D6154";
-button2Text.style.fontSize = "16px";
+button2Text.classList.add("button-style");
 
 button2.appendChild(button2Text);
 
@@ -412,6 +381,7 @@ fetch("http://localhost:5678/api/works")
   });
 
 // Récupére les images du modal depuis l'API
+
 fetch("http://localhost:5678/api/works")
   .then((response) => response.json())
   .then((data) => {
@@ -436,19 +406,41 @@ fetch("http://localhost:5678/api/works")
       deleteIcon.classList.add("delete-icon");
       imageContainer.appendChild(deleteIcon);
       deleteIcon.addEventListener("click", function () {
-        // Code pour supprimer l'image ici
-        // vous pouvez supprimer l'élément parent de l'icône (imageContainer)
         const parentFigure = deleteIcon.parentElement.parentElement;
         parentFigure.remove();
-
-        const galleryImage = gallery.querySelector(
-          `img[src="${project.imageUrl}"]`
-        );
+      
+        const galleryImage = gallery.querySelector(`img[src="${project.imageUrl}"]`);
         if (galleryImage) {
           const galleryFigure = galleryImage.parentElement;
           galleryFigure.remove();
         }
+      
+         const id = project.id; // Remplacez par l'ID de l'image que vous supprimez
+    const apiUrl = `http://localhost:5678/api/works/${id}`;
+    const accessToken = localStorage.getItem("token"); // Remplacez par votre jeton d'accès
+
+    fetch(apiUrl, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("L'image a été supprimée avec succès de l'API.");
+          // updateModalContent();
+        } else {
+          console.log("Échec de la suppression de l'image dans l'API.");
+        }
+      })
+      .catch((error) => {
+        console.error(
+          "Une erreur s'est produite lors de la suppression de l'image dans l'API :",
+          error
+        );
       });
+  });
 
       if (index === 0) {
         const arrowsIcon = document.createElement("i");
@@ -468,7 +460,6 @@ fetch("http://localhost:5678/api/works")
 
       galleryWrapper.appendChild(figure);
     });
-    //------------------------------
 
     // Ajout de la modal----------------------------------------------------
 
@@ -586,11 +577,17 @@ function ouvrirModale() {
 
 function createSecondModal() {
   const modal2 = document.createElement("div");
-  modal2.classList.add("modal3");
+  modal2.classList.add("modal2");
   
 
   const modalWrapper2 = document.createElement("div");
   modalWrapper2.classList.add("modal__wrapper");
+
+  const imageInput = document.createElement("input");
+imageInput.type = "file";
+imageInput.accept = "image/*";
+imageInput.style.display = "none";
+
 
   const title2 = document.createElement("h3");
   title2.id = "title_modal2";
@@ -598,7 +595,8 @@ function createSecondModal() {
   modalWrapper2.appendChild(title2);
 
   const backArrowIcon = document.createElement("i");
-  backArrowIcon.classList.add("fa", "fa-chevron-left", "back-arrow-icon");
+  backArrowIcon.classList.add("fa-solid", "fa-arrow-left");
+  backArrowIcon.id = "arrow-icon"; 
   backArrowIcon.addEventListener("click", function () {
     fermerDeuxiemeModale();
     ouvrirModale(); // Appeler la fonction pour ouvrir le premier modal
@@ -628,14 +626,26 @@ function createSecondModal() {
     imageInput.click();
   });
 
+  const imagePreview = document.createElement("img");
+imagePreview.classList.add("image-preview");
+imageLabel.appendChild(imagePreview);
+
+imageInput.addEventListener("change", function () {
+  const file = imageInput.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.addEventListener("load", function () {
+      imagePreview.src = reader.result;
+    });
+    reader.readAsDataURL(file);
+  } else {
+    imagePreview.src = ""; // Réinitialise l'aperçu de l'image si aucun fichier n'est sélectionné
+  }
+});
+
   const fileSizeText = document.createElement("p");
   fileSizeText.textContent = "jpg, png : 4mo max";
   imageLabel.appendChild(fileSizeText);
-
-  const imageInput = document.createElement("input");
-  imageInput.type = "file";
-  imageInput.accept = "image/*";
-  imageInput.style.display = "none";
 
   const inputTitle = document.createElement("h4");
   inputTitle.textContent = "Titre";
@@ -688,11 +698,72 @@ function createSecondModal() {
   buttonSubmit3.classList.add("custom-button");
   modalWrapper2.appendChild(buttonSubmit3);
 
+  function validateForm() {
+    const isTitleFilled = titleInput.value.trim() !== "";
+    const isCategoryFilled = categorySelect.value !== "";
+    const isImageSelected = imageInput.files.length > 0;
+  
+    return isTitleFilled && isCategoryFilled && isImageSelected;
+  }
+  
+  buttonSubmit3.addEventListener("click", function (event) {
+    event.preventDefault(); // Empêche le comportement par défaut du formulaire (rechargement de la page)
+  
+    if (validateForm()) {
+      buttonSubmit3.classList.add("filled"); // Ajoute la classe "filled" lorsque tous les champs sont remplis
+  
+      const formData = new FormData();
+      formData.append("image", imageInput.files[0]);
+      formData.append("title", titleInput.value); // Utilise la valeur du champ de saisie du titre
+      formData.append("category", categorySelect.value); // Utilise la valeur sélectionnée dans le menu déroulant de la catégorie
+      const accessToken = localStorage.getItem("token");
+  
+      fetch("http://localhost:5678/api/works", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${accessToken}`,
+        },
+        body: formData
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Une erreur s'est produite lors de l'envoi du formulaire.");
+          }
+          return response.json();
+        })
+        .then(data => {
+          // Gérer la réponse de l'API ici
+          console.log(data);
+          alert("Le formulaire a été envoyé avec succès !");
+        })
+        .catch(error => {
+          // Gérer les erreurs de la requête ici
+          console.error(error);
+          alert("Une erreur s'est produite lors de l'envoi du formulaire.");
+        });
+    } else {
+      alert("Veuillez remplir tous les champs et sélectionner une image.");
+    }
+  });
+
+
   modal2.appendChild(modalWrapper2);
 
   // Gestionnaire d'événement de clic pour le bouton de fermeture du deuxième modal
   closeButton2.addEventListener("click", fermerDeuxiemeModale);
+// Fonction pour vérifier l'état de remplissage du formulaire et mettre à jour la couleur du bouton
+function updateButtonColor() {
+  if (validateForm()) {
+    buttonSubmit3.classList.add("filled");
+  } else {
+    buttonSubmit3.classList.remove("filled");
+  }
+}
 
+// Écouter les événements de changement dans les champs de texte, catégorie et images
+titleInput.addEventListener("input", updateButtonColor);
+categorySelect.addEventListener("change", updateButtonColor);
+imageInput.addEventListener("change", updateButtonColor);
   // Gestionnaire d'événement de clic pour l'arrière-plan du deuxième modal
   modal2.addEventListener("click", function (e) {
     if (e.target === modal2) {
@@ -740,8 +811,6 @@ document.addEventListener("DOMContentLoaded", function () {
   fermerDeuxiemeModale();
 });
 
-// // Appeler la fonction pour ouvrir le deuxième modal
-// ouvrirDeuxiemeModale();
 
 // Section contact----------------------------------------------------------------------------
 const sectionContact = document.createElement("section");
