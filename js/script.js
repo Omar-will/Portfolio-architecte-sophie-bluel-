@@ -178,6 +178,14 @@ text3.classList.add("text3-style");
 img.insertAdjacentElement("afterend", icon3);
 icon3.insertAdjacentElement("afterend", text3);
 
+const icon5 = document.createElement("i");
+icon5.className = "far fa-pen-to-square";
+icon5.classList.add("icon2-style");
+
+const text5 = document.createElement("span");
+text5.innerText = "modifier";
+text5.classList.add("text2-style");
+
 const article = document.createElement("article");
 const h2Introduction = document.createElement("h2");
 h2Introduction.innerText = "Designer d'espace";
@@ -191,6 +199,8 @@ const p3Introduction = document.createElement("p");
 p3Introduction.innerText =
   "En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)";
 
+article.appendChild(icon5);
+article.appendChild(text5);
 article.appendChild(h2Introduction);
 article.appendChild(p1Introduction);
 article.appendChild(p2Introduction);
@@ -266,6 +276,10 @@ fetch("http://localhost:5678/api/categories")
       categorySpans.forEach((span) => {
         span.style.display = "none";
       });
+      // Masquer les éléments icon2 et text2
+    } else {
+      icon5.style.display = "none";
+      text5.style.display = "none";
     }
   })
   .catch((error) => {
@@ -405,42 +419,44 @@ fetch("http://localhost:5678/api/works")
       deleteIcon.classList.add("fa-solid", "fa-trash-can");
       deleteIcon.classList.add("delete-icon");
       imageContainer.appendChild(deleteIcon);
-      deleteIcon.addEventListener("click", function () {
-        const parentFigure = deleteIcon.parentElement.parentElement;
-        parentFigure.remove();
-      
-        const galleryImage = gallery.querySelector(`img[src="${project.imageUrl}"]`);
-        if (galleryImage) {
-          const galleryFigure = galleryImage.parentElement;
-          galleryFigure.remove();
-        }
-      
-         const id = project.id; // Remplacez par l'ID de l'image que vous supprimez
-    const apiUrl = `http://localhost:5678/api/works/${id}`;
-    const accessToken = localStorage.getItem("token"); // Remplacez par votre jeton d'accès
+      deleteIcon.addEventListener("click", function (event) {
+  event.preventDefault(); // Empêche le comportement par défaut du lien ou du bouton (rechargement de la page)
 
-    fetch(apiUrl, {
-      method: "DELETE",
-      headers: {
-        Accept: "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
-      .then((response) => {
-        if (response.ok) {
-          console.log("L'image a été supprimée avec succès de l'API.");
-          // updateModalContent();
-        } else {
-          console.log("Échec de la suppression de l'image dans l'API.");
-        }
-      })
-      .catch((error) => {
-        console.error(
-          "Une erreur s'est produite lors de la suppression de l'image dans l'API :",
-          error
-        );
+  const parentFigure = deleteIcon.parentElement.parentElement;
+  parentFigure.remove();
+
+  const galleryImage = gallery.querySelector(`img[src="${project.imageUrl}"]`);
+  if (galleryImage) {
+    const galleryFigure = galleryImage.parentElement;
+    galleryFigure.remove();
+  }
+
+        const id = project.id; // Remplacez par l'ID de l'image que vous supprimez
+        const apiUrl = `http://localhost:5678/api/works/${id}`;
+        const accessToken = localStorage.getItem("token"); // Remplacez par votre jeton d'accès
+
+        fetch(apiUrl, {
+          method: "DELETE",
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+          .then((response) => {
+            if (response.ok) {
+              console.log("L'image a été supprimée avec succès de l'API.");
+              // updateModalContent();
+            } else {
+              console.log("Échec de la suppression de l'image dans l'API.");
+            }
+          })
+          .catch((error) => {
+            console.error(
+              "Une erreur s'est produite lors de la suppression de l'image dans l'API :",
+              error
+            );
+          });
       });
-  });
 
       if (index === 0) {
         const arrowsIcon = document.createElement("i");
@@ -466,21 +482,26 @@ fetch("http://localhost:5678/api/works")
     const inputContainer = document.createElement("div");
     inputContainer.classList.add("centered-element");
     modalWrapper.appendChild(inputContainer);
-    
+
+    const blackBar = document.createElement("div");
+    blackBar.classList.add("black-bar");
+    modalWrapper.insertBefore(blackBar, inputContainer);
 
     const buttonSubmit = document.createElement("button");
-    buttonSubmit.type = "submit";
+    buttonSubmit.type = "button";
     buttonSubmit.textContent = "Ajouter une photo";
     buttonSubmit.classList.add("modal1button");
     inputContainer.appendChild(buttonSubmit);
 
-    buttonSubmit.addEventListener("click", function () {
-      ouvrirDeuxiemeModale();
-      fermerModale();
-    });
+    buttonSubmit.addEventListener("click", function (event) {
+  event.preventDefault(); // Empêche le rechargement de la page
+
+  ouvrirDeuxiemeModale();
+  fermerModale();
+});
     const deleteGalleryText = document.createElement("p");
     deleteGalleryText.textContent = "Supprimer la galerie";
-    deleteGalleryText.style.color = "red";
+    deleteGalleryText.classList.add("gallerydelete");
     inputContainer.appendChild(deleteGalleryText);
 
     // Une fois que les images sont chargées, appliquer le filtrage par défaut
@@ -573,21 +594,19 @@ function ouvrirModale() {
   modal.style.display = "block";
   modalWrapper.style.display = "block";
 }
-// Ajout deuxième modal--------------------------------------------------
+// Ajout Formulaire--------------------------------------------------
 
 function createSecondModal() {
   const modal2 = document.createElement("div");
   modal2.classList.add("modal2");
-  
 
   const modalWrapper2 = document.createElement("div");
-  modalWrapper2.classList.add("modal__wrapper");
+  modalWrapper2.classList.add("modal__wrapper2");
 
   const imageInput = document.createElement("input");
-imageInput.type = "file";
-imageInput.accept = "image/*";
-imageInput.style.display = "none";
-
+  imageInput.type = "file";
+  imageInput.accept = "image/*";
+  imageInput.style.display = "none";
 
   const title2 = document.createElement("h3");
   title2.id = "title_modal2";
@@ -596,7 +615,7 @@ imageInput.style.display = "none";
 
   const backArrowIcon = document.createElement("i");
   backArrowIcon.classList.add("fa-solid", "fa-arrow-left");
-  backArrowIcon.id = "arrow-icon"; 
+  backArrowIcon.id = "arrow-icon";
   backArrowIcon.addEventListener("click", function () {
     fermerDeuxiemeModale();
     ouvrirModale(); // Appeler la fonction pour ouvrir le premier modal
@@ -622,26 +641,27 @@ imageInput.style.display = "none";
   addButton.textContent = "+ Ajouter photo";
   imageLabel.appendChild(addButton);
 
-  addButton.addEventListener("click", function () {
+  addButton.addEventListener("click", function (event) {
+    event.preventDefault(); // Empêche le comportement par défaut du bouton (rechargement de la page)
     imageInput.click();
   });
 
   const imagePreview = document.createElement("img");
-imagePreview.classList.add("image-preview");
-imageLabel.appendChild(imagePreview);
+  imagePreview.classList.add("image-preview");
+  imageLabel.appendChild(imagePreview);
 
-imageInput.addEventListener("change", function () {
-  const file = imageInput.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.addEventListener("load", function () {
-      imagePreview.src = reader.result;
-    });
-    reader.readAsDataURL(file);
-  } else {
-    imagePreview.src = ""; // Réinitialise l'aperçu de l'image si aucun fichier n'est sélectionné
-  }
-});
+  imageInput.addEventListener("change", function () {
+    const file = imageInput.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.addEventListener("load", function () {
+        imagePreview.src = reader.result;
+      });
+      reader.readAsDataURL(file);
+    } else {
+      imagePreview.src = ""; // Réinitialise l'aperçu de l'image si aucun fichier n'est sélectionné
+    }
+  });
 
   const fileSizeText = document.createElement("p");
   fileSizeText.textContent = "jpg, png : 4mo max";
@@ -693,50 +713,87 @@ imageInput.addEventListener("change", function () {
   modalWrapper2.appendChild(categorySelect);
 
   const buttonSubmit3 = document.createElement("button");
-  buttonSubmit3.type = "submit";
+  buttonSubmit3.type = "button";
   buttonSubmit3.textContent = "Valider";
   buttonSubmit3.classList.add("custom-button");
+  modalWrapper2.appendChild(buttonSubmit3);
+
+  const blackBar2 = document.createElement("div");
+  blackBar2.classList.add("black-bar2");
+  modalWrapper2.insertBefore(blackBar2, buttonSubmit3);
+
   modalWrapper2.appendChild(buttonSubmit3);
 
   function validateForm() {
     const isTitleFilled = titleInput.value.trim() !== "";
     const isCategoryFilled = categorySelect.value !== "";
     const isImageSelected = imageInput.files.length > 0;
-  
+
     return isTitleFilled && isCategoryFilled && isImageSelected;
   }
-  
+
   buttonSubmit3.addEventListener("click", function (event) {
     event.preventDefault(); // Empêche le comportement par défaut du formulaire (rechargement de la page)
-  
+
     if (validateForm()) {
       buttonSubmit3.classList.add("filled"); // Ajoute la classe "filled" lorsque tous les champs sont remplis
-  
+
       const formData = new FormData();
       formData.append("image", imageInput.files[0]);
       formData.append("title", titleInput.value); // Utilise la valeur du champ de saisie du titre
       formData.append("category", categorySelect.value); // Utilise la valeur sélectionnée dans le menu déroulant de la catégorie
       const accessToken = localStorage.getItem("token");
-  
+
       fetch("http://localhost:5678/api/works", {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${accessToken}`,
+          Authorization: `Bearer ${accessToken}`,
         },
-        body: formData
+        body: formData,
       })
-        .then(response => {
+        .then((response) => {
           if (!response.ok) {
-            throw new Error("Une erreur s'est produite lors de l'envoi du formulaire.");
+            throw new Error(
+              "Une erreur s'est produite lors de l'envoi du formulaire."
+            );
           }
           return response.json();
         })
-        .then(data => {
+        .then((data) => {
           // Gérer la réponse de l'API ici
           console.log(data);
           alert("Le formulaire a été envoyé avec succès !");
+
+          imageInput.value = "";
+          titleInput.value = "";
+          categorySelect.value = "";
+          // imagePreview.value = "";
+      
+          // Une fois que l'image a été ajoutée avec succès, vous pouvez mettre à jour l'affichage sans recharger la page.
+          const newImage = data; // Supposons que la réponse de l'API contienne les informations sur la nouvelle image ajoutée.
+
+          // Créez un nouvel élément figure pour représenter la nouvelle image.
+          const figure = document.createElement("figure");
+          const image = document.createElement("img");
+          image.src = newImage.imageUrl;
+          image.alt = newImage.title;
+          const figcaption = document.createElement("figcaption");
+          figcaption.textContent = newImage.title;
+
+          figure.appendChild(image);
+          figure.appendChild(figcaption);
+
+          // Ajoute le nouvel élément figure à votre galerie existante.
+          const gallery = document.querySelector(".gallery");
+          gallery.appendChild(figure);
+
+          const galleryModal = document.querySelector(".gallery__modal");
+          galleryModal.appendChild(figure.cloneNode(true));
+
+          // Applique le filtrage approprié ou d'autres mises à jour nécessaires à l'affichage.
+          filterImages("tous");
         })
-        .catch(error => {
+        .catch((error) => {
           // Gérer les erreurs de la requête ici
           console.error(error);
           alert("Une erreur s'est produite lors de l'envoi du formulaire.");
@@ -746,24 +803,23 @@ imageInput.addEventListener("change", function () {
     }
   });
 
-
   modal2.appendChild(modalWrapper2);
 
   // Gestionnaire d'événement de clic pour le bouton de fermeture du deuxième modal
   closeButton2.addEventListener("click", fermerDeuxiemeModale);
-// Fonction pour vérifier l'état de remplissage du formulaire et mettre à jour la couleur du bouton
-function updateButtonColor() {
-  if (validateForm()) {
-    buttonSubmit3.classList.add("filled");
-  } else {
-    buttonSubmit3.classList.remove("filled");
+  // Fonction pour vérifier l'état de remplissage du formulaire et mettre à jour la couleur du bouton
+  function updateButtonColor() {
+    if (validateForm()) {
+      buttonSubmit3.classList.add("filled");
+    } else {
+      buttonSubmit3.classList.remove("filled");
+    }
   }
-}
 
-// Écouter les événements de changement dans les champs de texte, catégorie et images
-titleInput.addEventListener("input", updateButtonColor);
-categorySelect.addEventListener("change", updateButtonColor);
-imageInput.addEventListener("change", updateButtonColor);
+  // Écouter les événements de changement dans les champs de texte, catégorie et images
+  titleInput.addEventListener("input", updateButtonColor);
+  categorySelect.addEventListener("change", updateButtonColor);
+  imageInput.addEventListener("change", updateButtonColor);
   // Gestionnaire d'événement de clic pour l'arrière-plan du deuxième modal
   modal2.addEventListener("click", function (e) {
     if (e.target === modal2) {
@@ -778,13 +834,13 @@ imageInput.addEventListener("change", updateButtonColor);
 let secondModal = null;
 let isSecondModalOpen = false;
 
-function ouvrirDeuxiemeModale() {
-  if (!isSecondModalOpen) {
-    // Ouvrir le deuxième modal uniquement s'il n'est pas déjà ouvert
-    secondModal.style.display = "block";
-    isSecondModalOpen = true; // Définir la variable pour indiquer que le deuxième modal est ouvert
-  }
-}
+// function ouvrirDeuxiemeModale() {
+//   if (!isSecondModalOpen) {
+//     // Ouvrir le deuxième modal uniquement s'il n'est pas déjà ouvert
+//     secondModal.style.display = "block";
+//     isSecondModalOpen = true; // Définir la variable pour indiquer que le deuxième modal est ouvert
+//   }
+// }
 
 function ouvrirDeuxiemeModale() {
   if (isSecondModalOpen) {
@@ -806,11 +862,10 @@ function fermerDeuxiemeModale() {
     isSecondModalOpen = false;
   }
 }
-document.addEventListener("DOMContentLoaded", function () {
-  // Fermer le deuxième modal au chargement de la page
-  fermerDeuxiemeModale();
-});
-
+// document.addEventListener("DOMContentLoaded", function () {
+//   // Fermer le deuxième modal au chargement de la page
+//   fermerDeuxiemeModale();
+// });
 
 // Section contact----------------------------------------------------------------------------
 const sectionContact = document.createElement("section");
@@ -853,6 +908,7 @@ textareaMessage.rows = "10";
 const inputSubmit = document.createElement("input");
 inputSubmit.type = "submit";
 inputSubmit.value = "Envoyer";
+inputSubmit.disabled = true;
 
 formContact.appendChild(labelName);
 formContact.appendChild(inputName);

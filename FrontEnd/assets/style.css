@@ -185,44 +185,58 @@ li:hover {
 }
 /* Création de la barre noire et de l'icone */
 .blackBar-style {
-	background-color: black;
-	height: 70px;
-	width: 100%;
-	position: fixed;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	font-family: 'Work Sans';
-	z-index: 999;
-  }
-  
+  background-color: black;
+  height: 70px;
+  width: 100%;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Work Sans";
+  z-index: 999;
+}
+
 .bubble-style {
-	border-radius: 50px;
-	background-color: white;
-	padding: 12px;
-	width: 220px;
-	display: inline-block;
-	text-align: center;
-	font-weight: 600;
-  }
-  .text1-style {
-	color: #ffffff;
-	margin-right: 25px;
-  }
-  
-  .transparent-bg1 {
-	background-color: transparent;
-  }
-  .icon-style {
-	color: #ffffff;
-	margin-right: 15px;
-	font-size: 22px;
-  }
-  
+  border-radius: 50px;
+  background-color: white;
+  padding: 12px;
+  width: 220px;
+  display: inline-block;
+  text-align: center;
+  font-weight: 600;
+}
+.text1-style {
+  color: #ffffff;
+  margin-right: 25px;
+}
+
+.transparent-bg1 {
+  background-color: transparent;
+}
+.icon-style {
+  color: #ffffff;
+  margin-right: 15px;
+  font-size: 22px;
+}
+
 #introduction {
   display: flex;
   align-items: center;
 }
+.icon2-style,
+.text2-style {
+  bottom: 10px;
+  margin-left: 2px;
+  color: #1d6154;
+  font-size: 22px;
+  margin-bottom: 1.5rem;
+}
+.text2-style {
+  font-size: 16px;
+  margin-left: 0.5rem;
+  cursor: pointer;
+}
+
 #introduction figure {
   flex: 1;
 }
@@ -234,6 +248,8 @@ li:hover {
 
 #introduction article {
   flex: 1;
+  margin-bottom: 3rem;
+  margin-left: 2rem;
 }
 
 #introduction article p {
@@ -250,20 +266,19 @@ li:hover {
 }
 
 .text3-style {
-	color: #1D6154;
-	text-transform: lowercase;
-	cursor: pointer;
-	font-size: 16px;
-  }
+  color: #1d6154;
+  text-transform: lowercase;
+  cursor: pointer;
+  font-size: 16px;
+}
 
-  .icon3-style {
-	color: #1D6154;
-	margin-right: 10px;
-	margin-left: 60px;
-	margin-top: 15px;
-	font-size: 22px;
-  }
-  
+.icon3-style {
+  color: #1d6154;
+  margin-right: 10px;
+  margin-left: 60px;
+  margin-top: 15px;
+  font-size: 22px;
+}
 
 #portfolio {
   margin-top: 8rem;
@@ -436,6 +451,18 @@ footer nav ul {
   top: 100rem;
   left: 25rem;
   max-width: calc(100vw - 20px);
+  max-height: 800px;
+  background-color: white;
+  padding: 20px;
+  font-family: "Work Sans";
+  border-radius: 20px;
+}
+.modal__wrapper2 {
+  position: relative;
+  width: 670px;
+  top: 100rem;
+  left: 25rem;
+  max-width: calc(100vw - 20px);
   max-height: 900px;
   background-color: white;
   padding: 20px;
@@ -447,6 +474,20 @@ footer nav ul {
   margin-bottom: 32px;
 }
 
+.black-bar {
+  background-color: black;
+  height: 1px;
+  width: 70%;
+  margin-top: 3rem;
+  margin-left: 5.5rem;
+}
+.black-bar2 {
+  background-color: black;
+  height: 1px;
+  width: 76%;
+  margin-top: 4rem;
+  margin-left: 5rem;
+}
 
 #title_modal {
   font-size: 26px;
@@ -505,7 +546,7 @@ footer nav ul {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 100px;
+  margin-top: 35px;
   margin-bottom: 40px;
   flex-direction: column;
 }
@@ -513,13 +554,20 @@ footer nav ul {
 .modal1button {
   font-family: "Syne";
   font-weight: 700;
+  font-size: 14px;
   color: white;
   background-color: #1d6154;
-  margin: 2em auto;
-  width: 220px;
-  padding: 10px;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  width: 260px;
+  padding: 12px;
   text-align: center;
   border-radius: 60px;
+  cursor: pointer;
+}
+.gallerydelete {
+  color: red;
+  font-size: 15px;
   cursor: pointer;
 }
 .arrows-icon {
@@ -548,13 +596,13 @@ footer nav ul {
 .custom-button {
   font-family: "Syne";
   font-weight: 700;
-  font-size: 14px;
+  font-size: 16px;
   color: white;
   background-color: #a7a7a7;
-  margin-top: 4rem;
-  margin-left: 11rem;
-  margin-bottom: 2rem;
-  width: 260px;
+  margin-top: 3rem;
+  margin-left: 12.5rem;
+  margin-bottom: 3rem;
+  width: 270px;
   padding: 10px;
   text-align: center;
   border: 2px solid #a7a7a7;
@@ -563,7 +611,7 @@ footer nav ul {
 }
 .custom-button.filled {
   background-color: #1d6154;
-  color: white; 
+  color: white;
 }
 .fa-solid.fa-image {
   font-size: 68px;
@@ -581,8 +629,8 @@ footer nav ul {
   flex-direction: column;
   align-items: center;
   background-color: #e8f1f6;
-  padding: 68px;
-  width: 350px;
+  padding: 38px;
+  width: 450px;
 }
 
 .input-container label button {
@@ -608,7 +656,7 @@ footer nav ul {
   margin-left: 4.6rem;
   font-size: 16px;
   font-family: "Work Sans";
-  width: 29rem;
+  width: 31.5rem;
   height: 4rem;
   border: 0px solid #cbd6dc;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
@@ -626,11 +674,10 @@ footer nav ul {
 .custom-selection {
   text-align: left;
   padding-left: 1rem;
-  font-size: 16px;
   margin-left: 4.7rem;
   font-size: 16px;
   font-family: "Work Sans";
-  width: 30rem;
+  width: 32.5rem;
   height: 4rem;
   background-color: white;
   border: 0px solid #cbd6dc;
@@ -650,9 +697,8 @@ footer nav ul {
 .image-preview {
   position: absolute;
   top: 9.3rem;
-  max-width: 555px;
-  max-height: 298.5px;
-
+  width: 220px;
+  max-height: 238.5px;
 }
 
 .image-label button,
