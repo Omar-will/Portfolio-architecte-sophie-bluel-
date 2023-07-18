@@ -96,17 +96,19 @@ document.body.appendChild(footer);
 
 
 // ------- Requéte API ---------------------------
-
+//déclare une fonction nommée requestLogin.
+//La fonction utilise le mot-clé return pour renvoyer une promesse résultant de l'appel à fetch.
 function requestLogin() {
     return fetch("http://localhost:5678/api/users/login", {
         // indique que la requête doit être effectuée avec la méthode HTTP POST
         method: 'POST',
         headers: {
             "Content-type": "application/json"
-        },
+        },  // L'en-tête Content-type indique que les données sont au format JSON
+        //L'objet body est défini avec JSON.stringify, qui convertit un objet JavaScript en une chaîne JSON.
         body: JSON.stringify({
-            "email": stockInputEmail,
-            "password": stockInputPassword,
+            "email": stockInputEmail, // Ajoute l'adresse e-mail stockée dans la variable stockInputEmail au corps de la requête
+            "password": stockInputPassword, // Ajoute le mot de passe stocké dans la variable stockInputPassword au corps de la requête
         })
     });
 };
@@ -123,32 +125,36 @@ let stockInputEmail = inputEmail.value;
 //--------- Evénement click formulaire + check 
 
 submit.addEventListener('click', (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Empêche le comportement par défaut du formulaire (rechargement de la page)
+    // Stocke les valeurs des champs d'e-mail et de mot de passe dans les variables correspondantes
     stockInputEmail = inputEmail.value;
     stockInputPassword = inputPassword.value;
+    // Appelle la fonction requestLogin pour effectuer la requête de connexion
     requestLogin()
-        .then((response) => response.json())
+        .then((response) => response.json()) // Convertit la réponse en JSON
         .then(login => {
-            console.log(login);
+            console.log(login); // Affiche les données de connexion dans la console
             if (login.token) {
-                localStorage.setItem('token', login.token);
-                isUserLogged = true;
-                window.location.href = "./index.html";
-                console.log("Utilisateur connecté");
+                // Si le token est présent dans les données de connexion, cela signifie que l'authentification a réussi
+                localStorage.setItem('token', login.token); // Stocke le token dans le stockage local
+                isUserLogged = true; // Définit la variable isUserLogged à true
+                window.location.href = "./index.html"; // Redirige vers la page index.html
+                console.log("Utilisateur connecté"); // Affiche un message de connection
             } else {
+                //token n'est pas trouvé, l'authentification a échoué
                 console.error("Le token n'a pas été trouvé");
-                errorDisplay.innerHTML = "Identifiant ou Mot de passe incorrect";
+                errorDisplay.innerHTML = "Identifiant ou Mot de passe incorrect"; // Affiche un message d'erreur
             };
         });
 });
 
 
 // ------ Récupération des données --------------
-
+ // La fonction de rappel est exécutée lorsque l'utilisateur saisit ou modifie quelque chose dans le champ 
 inputEmail.addEventListener('input', (e) => {
-    console.log(e.target.value);
+    console.log(e.target.value); // Affiche la valeur actuelle de l'élément inputEmail dans la console
 
 });
 inputPassword.addEventListener('input', (e) => {
-    console.log(e.target.value);
+    console.log(e.target.value); // Affiche la valeur actuelle de l'élément inputPassword dans la console
 });

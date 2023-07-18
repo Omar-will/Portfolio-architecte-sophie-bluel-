@@ -358,6 +358,7 @@ li:hover {
 
 .gallery img {
   width: 100%;
+  z-index: 1;
 }
 #contact {
   width: 50%;
@@ -435,6 +436,7 @@ footer nav ul {
 .modal,
 .modal2 {
   position: absolute;
+  z-index: 1;
   top: -50rem;
   left: 0;
   width: 100%;
@@ -447,6 +449,7 @@ footer nav ul {
 
 .modal__wrapper {
   position: relative;
+  z-index: 0;
   width: 630px;
   top: 100rem;
   left: 25rem;
