@@ -144,6 +144,7 @@ submit.addEventListener('click', (e) => {
                 //token n'est pas trouvé, l'authentification a échoué
                 console.error("Le token n'a pas été trouvé");
                 errorDisplay.innerHTML = "Identifiant ou Mot de passe incorrect"; // Affiche un message d'erreur
+                inputEmail.insertAdjacentElement("beforebegin", errorDisplay); // Insère le message d'erreur avant le champ d'e-mail 
             };
         });
 });

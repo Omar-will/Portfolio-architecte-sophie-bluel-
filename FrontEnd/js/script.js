@@ -95,6 +95,7 @@ ul.appendChild(liLogin);
 ul.appendChild(liInstagram);
 nav.appendChild(ul);
 header.appendChild(nav);
+//ce code modifie le contenu de la page en remplaçant le lien "login" par un bouton "logout"
 // Code exécuté lorsque le contenu HTML de la page est entièrement chargé
 document.addEventListener("DOMContentLoaded", () => {
   const liLogin = document.getElementById("login"); // Sélectionne l'élément de liste avec l'ID "login"
@@ -133,6 +134,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loginLink.classList.add("link-style");
     liLogin.appendChild(loginLink);
     // Afficher les <span>
+    // se sont les span et icone modifier
     spansToHide.forEach((span) => {
       span.style.display = "inline"; // Ou "block" selon le style souhaité
     }); // Parcourt chaque élément "span" dans la NodeList "spansToHide" et rétablit leur affichage en définissant leur propriété CSS "display" sur "inline"
@@ -250,7 +252,8 @@ span1.innerText = "Tous";
 span1.classList.add("hide-span");
 
 divItems.appendChild(span1);
-
+//déclare une variable appelée categories et lui attribue une valeur initiale vide représentée par des crochets [].
+//les crochets [] sont utilisés pour définir un tableau vide
 let categories = [];
 let works = [];
 
@@ -295,6 +298,8 @@ fetch("http://localhost:5678/api/categories")
 sectionPortfolio.appendChild(divItems);
 sectionPortfolio.appendChild(divGallery);
 // Gestionnaire d'événement pour les clics sur divItems
+//Cette ligne de code ajoute un écouteur d'événement "click" à l'élément avec l'ID "divItems". 
+//Lorsqu'un clic se produit, la fonction de rappel est exécutée
 divItems.addEventListener("click", function (event) {
   // Si l'élément cliqué est un <span>
   if (event.target.tagName === "SPAN") {
@@ -303,7 +308,8 @@ divItems.addEventListener("click", function (event) {
     spans.forEach(function (span) {
       span.classList.remove("active");
     });
-    // Ajoute la classe "active" à l'élément <span> cliqué
+    //ajoute la classe CSS "active" à l'élément <span> qui a été cliqué (event.target). 
+    //Cela permet d'activer visuellement cet élément spécifique.
     event.target.classList.add("active");
 
     const categoryName = event.target.innerText;
@@ -311,7 +317,7 @@ divItems.addEventListener("click", function (event) {
 
     // Récupére l'identifiant de catégorie correspondant au nom de catégorie
     const category = categories.find(
-      // Recherche la catégorie correspondant au nom de catégorie cliqué
+      // Recherche la catégorie correspondant au nom de catégorie cliqué 
       (category) => category.name === categoryName
     );
     if (category) {
@@ -336,6 +342,8 @@ span1.addEventListener("click", function () {
 
 function loadWorks() {
   // Chargement des projets à partir de l'API
+  //ce code est utilisé pour charger les projets à partir de l'API,
+  // afficher les projets en fonction de la catégorie sélectionnée et filtre les images en fonction de la catégorie.
   fetch("http://localhost:5678/api/works")
     .then((response) => response.json())
     .then((data) => {
@@ -369,7 +377,8 @@ function displayWorks(categoryId) {
     divGallery.appendChild(figure); // Ajoute l'élément <figure> à divGallery
   });
 }
-function filterImages(categoryId) {
+// "categoryId" le replacer entre la parenthèse 
+function filterImages() {
   // Filtrer les images en fonction de l'identifiant de catégorie
   const figures = divGallery.querySelectorAll("figure"); // Sélectionne tous les éléments <figure> dans divGallery et les stocke dans la variable figures
 
@@ -488,7 +497,7 @@ fetch("http://localhost:5678/api/works")
       });
 
       if (index === 0) {
-        // Vérifie si l'index est égal à zéro
+        // Vérifie si l'index est égal à zéro et applique la multi fleche au premier élément
         const arrowsIcon = document.createElement("i"); // Crée un nouvel élément <i>
         arrowsIcon.classList.add("fa-solid", "fa-arrows-up-down-left-right"); // Ajoute les classes CSS
         arrowsIcon.classList.add("arrows-icon"); // Ajoute la classe CSS "arrows-icon" à l'élément
@@ -607,6 +616,8 @@ function fermerModale() {
 }
 modal.addEventListener("click", function (e) {
   // Vérifie si le clic est en dehors du contenu de la modale
+  //C'est la propriété de l'objet événement (e) qui fait référence à l'élément sur lequel le clic s'est produit.
+  // Lorsque vous cliquez quelque part dans la page, l'élément sur lequel vous avez cliqué devient la valeur de e.target.
   if (e.target === modal) {
     fermerModale(); // Appelle la fonction fermerModale() pour masquer la modale si le clic est en dehors de son contenu
   }
@@ -684,6 +695,8 @@ function createSecondModal() {
   imagePreview.classList.add("image-preview"); // Ajoute la classe CSS
   imageLabel.appendChild(imagePreview); // Ajoute l'aperçu de l'image en tant qu'enfant de l'élément imageLabel
 
+  //ce code permet à l'utilisateur de sélectionner un fichier à partir de l'élément imageInput 
+  //et affiche un aperçu de l'image sélectionnée dans l'élément 
   imageInput.addEventListener("change", function () {
     // Ajoute un écouteur d'événement "change" à l'élément imageInput
     const file = imageInput.files[0]; // Récupère le premier fichier sélectionné dans l'élément imageInput
