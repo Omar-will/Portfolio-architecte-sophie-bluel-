@@ -861,7 +861,8 @@ function createSecondModal() {
             const imageContainerModalParent =
               deleteIconModal.closest(".image-container"); // Sélectionne l'élément parent de l'icône de suppression avec la classe CSS "image-container" dans la modale de la galerie
             const imageId = imageContainerModalParent.getAttribute("data-id"); // Récupère l'identifiant unique de l'image
-
+            function updateModalContent() {
+            }
             fetch(`http://localhost:5678/api/works/${imageId}`, {
               method: "DELETE",
               headers: {
@@ -893,6 +894,10 @@ function createSecondModal() {
                     galleryModalImage.closest("figure"); // Sélectionne l'élément figure parent de l'élément galleryModalImage
                   galleryModalFigure.remove(); // Supprime l'élément figure de la galerie modale
                 }
+              })
+              .then(() => {
+                console.log("L'image a été supprimée avec succès de l'API.");
+                updateModalContent();
               })
               .catch((error) => {
                 // Gérer les erreurs de la requête ici
