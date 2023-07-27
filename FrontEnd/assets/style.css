@@ -154,12 +154,14 @@ h1 {
   font-size: 22px;
   font-weight: 800;
   color: #b1663c;
+  cursor: pointer;
 }
 
 h1 > span {
   font-family: "Work Sans";
   font-size: 10px;
   letter-spacing: 0.1em;
+  cursor: pointer;
 }
 
 h2 {
@@ -178,6 +180,7 @@ nav li {
   padding: 0 0px;
   font-size: 1.2em;
   margin-left: 50px;
+  cursor: pointer;
 }
 
 li:hover {
@@ -227,7 +230,7 @@ li:hover {
 .text2-style {
   bottom: 10px;
   margin-left: 2px;
-  color: #1d6154;
+  color: black;
   font-size: 22px;
   margin-bottom: 1.5rem;
 }
@@ -266,14 +269,14 @@ li:hover {
 }
 
 .text3-style {
-  color: #1d6154;
+  color: black;
   text-transform: lowercase;
   cursor: pointer;
   font-size: 16px;
 }
 
 .icon3-style {
-  color: #1d6154;
+  color: black;
   margin-right: 10px;
   margin-left: 60px;
   margin-top: 15px;
@@ -289,7 +292,7 @@ li:hover {
 }
 
 #portfolio i {
-  color: #1d6154;
+  color: black;
   margin-bottom: 6rem;
 }
 
@@ -311,7 +314,7 @@ li:hover {
 }
 
 .button-style {
-  color: #1d6154;
+  color: black;
   font-size: 14px;
   margin-left: 10px;
   text-transform: lowercase;

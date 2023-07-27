@@ -63,6 +63,9 @@ const span = document.createElement("span");
 span.innerText = "Architecte d'intérieur";
 h1.appendChild(span);
 header.appendChild(h1);
+h1.addEventListener("click", () => {
+  window.location.href = "./index.html";
+});
 
 // Récupération de l'élément parent de l'en-tête
 const parentElement = document.body;
@@ -77,6 +80,9 @@ const nav = document.createElement("nav");
 const ul = document.createElement("ul");
 const liProjets = document.createElement("li");
 liProjets.innerText = "projets";
+liProjets.addEventListener("click", () => {
+  window.location.href = "./index.html";
+});
 const liContact = document.createElement("li");
 liContact.innerText = "contact";
 const liLogin = document.createElement("li");
@@ -106,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Remplace le lien "login" par un bouton "logout"
     liLogin.innerHTML = ""; // Supprime tout le contenu HTML de l'élément liLogin
     const linkLogout = document.createElement("a"); // Crée un nouvel élément "a" (lien)
-    linkLogout.innerText = "Logout"; // Définit le texte affiché dans le lien
+    linkLogout.innerText = "logout"; // Définit le texte affiché dans le lien
     linkLogout.href = "#"; // Définit l'URL du lien (dans ce cas, il pointe vers un emplacement fictif "#")
     linkLogout.style.textDecoration = "none"; // Supprime la décoration de texte par défaut du lien
     linkLogout.style.color = "inherit"; // Utilise la couleur de texte héritée du parent pour le lien
@@ -127,7 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
     blackBar.style.display = "none";
     // L'utilisateur n'est pas connecté, affiche le lien "login"
     const loginLink = document.createElement("a");
-    loginLink.innerText = "Login";
+    loginLink.innerText = "login";
     loginLink.href = "./login.html";
     loginLink.style.textDecoration = "none";
     loginLink.style.color = "inherit";
@@ -257,7 +263,7 @@ divItems.appendChild(span1);
 let categories = [];
 let works = [];
 
-// Récupération des catégories à partir de l'API
+// Récupération des catégories à partir de l'API-------------------1
 fetch("http://localhost:5678/api/categories")
   .then((response) => response.json()) // Extraire les données JSON de la réponse HTTP
   .then((data) => {
@@ -341,7 +347,7 @@ span1.addEventListener("click", function () {
 });
 
 function loadWorks() {
-  // Chargement des projets à partir de l'API
+  // Chargement des projets à partir de l'API------------------------------------2
   //ce code est utilisé pour charger les projets à partir de l'API,
   // afficher les projets en fonction de la catégorie sélectionnée et filtre les images en fonction de la catégorie.
   fetch("http://localhost:5678/api/works")
@@ -354,7 +360,7 @@ function loadWorks() {
       console.error("Erreur lors du chargement des projets:", error);
     }); // Affiche un message d'erreur dans la console si une erreur se produit lors du chargement des projets
 }
-// Affichage des projets
+// Affichage des projets------------------------3
 function displayWorks(categoryId) {
   divGallery.innerHTML = ""; // Efface le contenu actuel de divGallery
 
@@ -377,7 +383,7 @@ function displayWorks(categoryId) {
     divGallery.appendChild(figure); // Ajoute l'élément <figure> à divGallery
   });
 }
-// "categoryId" le replacer entre la parenthèse 
+// ---------------------------------4 
 function filterImages() {
   // Filtrer les images en fonction de l'identifiant de catégorie
   const figures = divGallery.querySelectorAll("figure"); // Sélectionne tous les éléments <figure> dans divGallery et les stocke dans la variable figures
@@ -422,7 +428,7 @@ fetch("http://localhost:5678/api/works")
     ); // Affiche un message d'erreur dans la console avec le détail de l'erreur
   });
 
-// Récupére les images du modal depuis l'API
+// Récupére les images du modal depuis l'API---------------------------------1
 fetch("http://localhost:5678/api/works")
   .then((response) => response.json()) // Convertit la réponse en JSON
   .then((data) => {

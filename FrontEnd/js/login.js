@@ -6,11 +6,17 @@ const span = document.createElement("span");
 span.innerText = "Architecte d'intérieur";
 h1.appendChild(span);
 header.appendChild(h1);
+h1.addEventListener("click", () => {
+    window.location.href = "./index.html";
+  });
 
 const nav = document.createElement("nav");
 const ul = document.createElement("ul");
 const liProjets = document.createElement("li");
 liProjets.innerText = "projets";
+liProjets.addEventListener("click", () => {
+    window.location.href = "./index.html";
+  });
 const liContact = document.createElement("li");
 liContact.innerText = "contact";
 const liLogin = document.createElement("li");
